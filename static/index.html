@@ -1,11 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Server Home</title>
+    <title>Server Routes</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .textCenter {
+            text-align: center;
+        }
+
+        .centerIt {
+            text-align: center;
+        }
+    </style>
 </head>
+
 <body>
-    Server Home
+    <h3 class="textCenter">These are the paths for manipulating the database</h3>
+    <h6 class="textCenter">Static Page</h6>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>HTTP method</th>
+                <th>Path</th>
+                <th>Function of the path</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="centerIt">NONE</td>
+                <td>/</td>
+                <td>Displays the static page</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 class="textCenter">Users</h3>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>HTTP method</th>
+                <th>Path</th>
+                <th>Function of the path</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="centerIt">get</td>
+                <td>/users</td>
+                <td>Returns all users in an array of objects</td>
+            </tr>
+            <tr>
+                <td class="centerIt">post</td>
+                <td>/users</td>
+                <td>Adds a new user</td>
+            </tr>
+            <tr>
+                <td class="centerIt">get</td>
+                <td>/users/:id</td>
+                <td>Returns a single user by id</td>
+            </tr>
+            <tr>
+                <td class="centerIt">delete</td>
+                <td>/users/:id</td>
+                <td>Deletes a single user by id</td>
+            </tr>
+            <tr>
+                <td class="centerIt">patch</td>
+                <td>/users/:id</td>
+                <td>Edits a single user by id</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 class="textCenter">Items</h3>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>HTTP method</th>
+                <th>Path</th>
+                <th>Function of the path</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="centerIt">get</td>
+                <td>/Items</td>
+                <td>Returns all Items in an array of objects</td>
+            </tr>
+            <tr>
+                <td class="centerIt">post</td>
+                <td>/Items</td>
+                <td>Adds a new product</td>
+            </tr>
+            <tr>
+                <td class="centerIt">get</td>
+                <td>/Items/:id</td>
+                <td>Returns a single product by id</td>
+            </tr>
+            <tr>
+                <td class="centerIt">delete</td>
+                <td>/Items/:id</td>
+                <td>Deletes a single product by id</td>
+            </tr>
+            <tr>
+                <td class="centerIt">patch</td>
+                <td>/Items/:id</td>
+                <td>Edits a single product by id</td>
+            </tr>
+        </tbody>
+    </table>
 </body>
+
 </html>
