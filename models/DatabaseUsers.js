@@ -1,5 +1,5 @@
 // Compare Password
-// import { compare, hash } from 'bcrypt';
+import { compare, hash } from 'bcrypt';
 
 // Create Token When signed in
 // import { createToken } from '../middleware/AuthenticateUsers.js';
@@ -38,7 +38,7 @@ const getSingleUser = async (userID) => {
         const [result] = await pool.query(`
             SELECT userID, userEmail, userFirstName, userLastName, userImg, userPass, userGender, userAge, userRole
             FROM bfqjmxyo9asyeushukci.Users
-            WHERE userID = ?;`[userID]);
+            WHERE userID = ?`,[userID]);
         return result;
     } catch (error) {
         console.error("Error getting users:", error);
@@ -46,4 +46,65 @@ const getSingleUser = async (userID) => {
     }
 };
 
-export { getUsers, getSingleUser }
+// Add a user
+const addUsers = async (userEmail, userFirstName, userLastName, userPass) => {
+    try {
+        // hash password
+        let hashedPassword = await hash(userPass, 10);
+        const [result] = await pool.query(`
+            INSERT INTO
+            bfqjmxyo9asyeushukci.Users
+            (userEmail, userFirstName, userLastName, userPass)
+            VALUES(?, ?, ?, ?);`,
+            [userEmail, userFirstName, userLastName, hashedPassword]);
+        const userID = result.insertId;
+        let user = {
+            userEmail,
+            userPass: hashedPassword
+        };
+        return { user: await getSingleUser(userID) };
+    } catch (error) {
+        console.error("User Already exists", error);
+        throw error;
+    }
+}
+
+// Update a user
+const updateUser = async (id, updatedFields) => {
+    try {
+        const [existUser] = await getSingleUser(id);
+
+        if (!existUser) {
+            throw new Error("User not found");
+        }
+
+        const setClause = Object.keys(updatedFields).map(field => `${field} = ?`).join(', ');
+
+        const params = [...Object.values(updatedFields), id];
+
+        const [User] = await pool.query(
+            `UPDATE bfqjmxyo9asyeushukci.Users
+            SET ${setClause}
+            WHERE userID = ?`,
+            params
+        );
+        let user = {
+            userEmail: updatedFields.userEmail,
+            userPass: updatedFields.userPass
+        };
+        return { user: await getSingleUser(id) };
+    } catch (error) {
+        console.error("Error updating User:", error);
+        throw error;
+    }
+};
+
+// Delete a user
+const deleteUser = async (id) => {
+    const [User] = await pool.query(`
+        DELETE FROM bfqjmxyo9asyeushukci.Users 
+        WHERE userID = ?`, [id]);
+    return getUsers(User);
+};
+ 
+export { getUsers, getSingleUser, addUsers, updateUser, deleteUser }
