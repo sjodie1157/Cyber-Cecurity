@@ -1,8 +1,8 @@
 // Imported from database functions
-import { getUsers, getSingleUser } from '../models/DatabaseUsers.js'
+import { getUsers, getSingleUser, addUsers, updateUser, deleteUser } from '../models/DatabaseUsers.js'
 
 // Imported Password Encryption
-// import bcrypt from 'bcrypt'
+// import hash from 'bcrypt'
 
 export default {
     getUsers: async (req, res) => {
@@ -26,4 +26,49 @@ export default {
             res.status(500).json({ error: "Internal Server Error" });
         }
     },
+    addUsers: async (req, res) => {
+        try {
+            const { userEmail, userFirstName, userLastName, userPass } = req.body;
+                const newUser = await addUsers(userEmail, userFirstName, userLastName, userPass);
+                res.status(201).json(newUser);
+        } catch (error) {
+            console.error("Error adding user:", error);
+            res.status(400).json({ error: error.message });
+        }
+    },
+    updateUser: async (req, res) => {
+        try {
+            const existingUser = await getSingleUser(+req.params.id);
+            if (!existingUser) {
+                return res.status(404).json({ error: "User not found" });
+            }
+
+            const { userEmail, userFirstName, userLastName, userImg, userPass, userGender, userAge, userRole } = req.body;
+
+            const updatedFields = {};
+            if (userEmail) updatedFields.userEmail = userEmail;
+            if (userFirstName) updatedFields.userFirstName = userFirstName;
+            if (userLastName) updatedFields.userLastName = userLastName;
+            if (userImg) updatedFields.userImg = userImg;
+            if (userPass) updatedFields.userPass = await hash(userPass, 10);
+            if (userGender) updatedFields.userGender = userGender;
+            if (userAge) updatedFields.userAge = userAge;
+            if (userRole) updatedFields.userRole = userRole;
+
+            const updatedUser = await updateUser(req.params.id, updatedFields);
+            res.json(updatedUser);
+        } catch (error) {
+            console.error("Error updating user:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    },
+    deleteUser: async (req, res) => {
+        try {
+            const deletedUser = await deleteUser(req.params.id);
+            res.json({ message: "User deleted successfully" });
+        } catch (error) {
+            console.error("Error deleting user:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    }
 }
