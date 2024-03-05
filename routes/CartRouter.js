@@ -1,13 +1,15 @@
 import express from 'express';
-
 import controller from '../controller/CartController.js';
 
 const router = express.Router();
 
-// Router GET, Post, Delete, Patch for Cart
+// GET cart items for a specific user
+router.get('/:id', controller.getCartItems);
 
-router.get('/', controller.getCartItems)
-router.delete('/:id', controller.removeFromCart)
-router.post('/', controller.addToCart)
+// DELETE item from cart for a specific user
+router.delete('/:id', controller.removeFromCart);
 
-export default router
+// POST add item to cart for a specific user
+router.post('/:id', controller.addToCart);
+
+export default router;

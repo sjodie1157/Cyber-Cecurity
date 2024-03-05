@@ -3,7 +3,7 @@ import { config } from 'dotenv';
 
 config();
 
-// Connection to databse
+// Connection to database
 const pool = createPool({
     host: process.env.HOST,
     database: process.env.DATABASE,
@@ -14,12 +14,13 @@ const pool = createPool({
 });
 
 // Adding to cart
-const addToCart = async (userID, productID, quantity) => {
+const addToCart = async (userID, prodID) => {
     try {
-        const [result] = await pool.query(`
-            INSERT INTO Cart (userID, productID, quantity)
-            VALUES (?, ?, ?)`,
-            [userID, productID, quantity]);
+        const [result] = await pool.query(
+            `INSERT INTO Cart (userID, prodID, quantity) 
+            VALUES(?, ?, 1)`,
+            [userID[0], prodID]
+        );
 
         return result.insertId;
     } catch (error) {
@@ -31,10 +32,10 @@ const addToCart = async (userID, productID, quantity) => {
 // Remove item from cart
 const removeFromCart = async (userID, prodID) => {
     try {
-        const [result] = await pool.query(`
-            DELETE FROM Cart
-            WHERE userID = ? AND prodID = ?`,
-            [userID, prodID]);
+        const [result] = await pool.query(
+            `DELETE FROM Cart WHERE userID = ? AND prodID = ?`,
+            [userID[0], prodID]
+        );
 
         return result.affectedRows > 0;
     } catch (error) {
@@ -43,15 +44,16 @@ const removeFromCart = async (userID, prodID) => {
     }
 };
 
+// Get cart items
 const getCartItems = async (userID) => {
     try {
         const [result] = await pool.query(`
-            SELECT p.prodID, p.prodName, p.prodPrice, c.quantity
-            FROM Products p
-            LEFT JOIN Cart c ON p.prodID = c.prodID
-            WHERE c.userID = ?`,
-            [userID]);
-
+    SELECT p.prodID, p.prodName, p.prodPrice, p.prodImg, 
+    SUM(c.quantity) AS totalQuantity,(p.prodPrice * SUM(c.quantity)) AS totalPrice
+    FROM Products p
+    LEFT JOIN Cart c ON p.prodID = c.prodID
+    WHERE c.userID = ?
+    GROUP BY p.prodID, p.prodName, p.prodPrice, p.prodImg;`,[userID[0]]);
         return result;
     } catch (error) {
         console.error("Error getting cart items:", error);
@@ -59,4 +61,7 @@ const getCartItems = async (userID) => {
     }
 };
 
-export { addToCart, removeFromCart, getCartItems}
+
+
+
+export { addToCart, removeFromCart, getCartItems };
