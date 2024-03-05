@@ -5,7 +5,7 @@ import express from 'express'
 import UsersRouter from './routes/UsersRouter.js';
 
 // Item Router Import
-// import ItemRouter from './routes/'
+import ItemsRouter from './routes/ItemsRouter.js'
 
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
@@ -27,7 +27,7 @@ app.use(cookieParser());
 app.use(express.static('./static'));
 
 app.use('/Users', UsersRouter);
-// app.use('/Items', ItemsRouter);
+app.use('/Items', ItemsRouter);
 
 // local host listener
 app.listen(port, () => {

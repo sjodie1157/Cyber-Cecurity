@@ -11,7 +11,7 @@ export default {
             res.json(users);
         } catch (error) {
             console.error('Error getting users');
-            res.status(500).json({ error: 'Internal Server Errror' });
+            res.status(500).json({ error: 'Internal Server Error' });
         }
     },
     getSingleUser: async (req, res) => {
