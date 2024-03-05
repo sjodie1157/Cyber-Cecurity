@@ -1,18 +1,30 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="home" v-if="users">
+    {{ users }}
+  </div>
+  <div v-else>
+    <h1>
+      Try again
+    </h1>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
+  data() {
+    return {};
+  },
+  computed: {
+    users() {
+      return this.$store.state.users
+    }
+  },
+  async mounted() {
+    try {
+      await this.$store.dispatch('fetchUsers');
+    } catch (error) {
+      console.error('Error fetching home data', error);
+    }
   }
-}
+};
 </script>
