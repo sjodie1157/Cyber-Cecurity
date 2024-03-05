@@ -3,16 +3,20 @@ import { getCartItems,removeFromCart,addToCart } from "../models/DatabseCart.js"
 export default {
     getCartItems: async (req, res) => {
         try {
-            const cartItems = await getCartItems()
-            res.json(cartItems)
+            const userID = req.params.id;
+            const cartItems = await getCartItems(userID);
+            res.json(cartItems);
         } catch (error) {
-            console.error('Error getting Items in cart');
-            res.status(500).json({ error: 'Internal Server Error' })
+            console.error("Error getting cart items:", error);
+            res.status(500).json({ error: "Internal server error" });
         }
     },
+
     removeFromCart: async (req, res) => {
         try {
-            const deletedCartItem = await removeFromCart(req.params.id);
+            const userID = req.params.id;
+            const { prodID, quantity } = req.body;
+            const deletedFromCart = await removeFromCart(userID, prodID, quantity);
             res.json({ message: "Item deleted successfully" }); 
         } catch (error) {
             console.error("Error deleting Item From Cart:", error);
@@ -21,8 +25,9 @@ export default {
     },
     addToCart: async (req, res) => {
         try {
-            const { userID, productID, quantity } = req.body;
-            const newItemId = await addToCart(userID, productID, quantity); 
+            const userID = req.params.id;
+            const { prodID, quantity } = req.body;
+            const newItemId = await addToCart(userID, prodID, quantity); 
             res.status(201).json({ message: "Item added to cart successfully", newItemId });
         } catch (error) {
             console.error("Error adding item:", error);
