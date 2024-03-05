@@ -107,4 +107,35 @@ const deleteUser = async (id) => {
     return getUsers(User);
 };
  
-export { getUsers, getSingleUser, addUsers, updateUser, deleteUser }
+// Sign in logic
+const signIn = async (userEmail, userPass) => {
+    try {
+        if (!userEmail || !userPass) {
+            throw new Error('Email or password cannot be empty');
+        }
+
+        const [users] = await pool.query(`
+            SELECT userID, userEmail, userFirstName, userLastName, userImg, userPass, userGender, userAge, userRole 
+            FROM bfqjmxyo9asyeushukci.Users
+            WHERE userEmail = ?`, [userEmail]);
+        
+        const user = users[0];
+
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const match = await compare(userPass, user.userPass);
+
+        if (!match) {
+            throw new Error('Incorrect password');
+        }
+
+        const token = createToken({ userEmail, userPass });
+        return { token, user };
+    } catch (error) {
+        console.error('Error signing in:', error);
+        throw error;
+    }
+};
+export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn}

@@ -2,7 +2,7 @@
 import { getUsers, getSingleUser, addUsers, updateUser, deleteUser } from '../models/DatabaseUsers.js'
 
 // Imported Password Encryption
-// import hash from 'bcrypt'
+import hash from 'bcrypt'
 
 export default {
     getUsers: async (req, res) => {
@@ -29,7 +29,7 @@ export default {
     addUsers: async (req, res) => {
         try {
             const { userEmail, userFirstName, userLastName, userPass } = req.body;
-                const newUser = await addUsers(userEmail, userFirstName, userLastName, userPass);
+                const newUser = await addUsers(userEmail, userFirstName, userLastName,userPass);
                 res.status(201).json(newUser);
         } catch (error) {
             console.error("Error adding user:", error);
@@ -68,6 +68,26 @@ export default {
             res.json({ message: "User deleted successfully" });
         } catch (error) {
             console.error("Error deleting user:", error);
+            res.status(500).json({ error: "Internal Server Error" });
+        }
+    },
+    signIn: async (req, res) => {
+        const { userEmail, userPass } = req.body;
+        try {
+            const { token, user } = await signIn(userEmail, userPass);
+            res.cookie('webtoken', token, { httpOnly: false });
+            res.json({ token, user });
+        } catch (error) {
+            console.error("Error signing in:", error);
+            res.status(401).json({ error: "Invalid credentials" });
+        }
+    },
+    signOut: async (req, res) => {
+        try {
+            res.clearCookie('webtoken');
+            res.json({ message: 'Successfully signed out' });
+        } catch (error) {
+            console.error("Error signing out:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
