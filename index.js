@@ -7,6 +7,9 @@ import UsersRouter from './routes/UsersRouter.js';
 // Item Router Import
 import ItemsRouter from './routes/ItemsRouter.js'
 
+// Cart Router Import
+import CartRouter from './routes/CartRouter.js'
+
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
@@ -28,6 +31,7 @@ app.use(express.static('./static'));
 
 app.use('/Users', UsersRouter);
 app.use('/Items', ItemsRouter);
+app.use('/Cart', CartRouter);
 
 // local host listener
 app.listen(port, () => {
