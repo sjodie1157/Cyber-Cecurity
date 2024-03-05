@@ -29,7 +29,7 @@ export default {
     addUsers: async (req, res) => {
         try {
             const { userEmail, userFirstName, userLastName, userPass } = req.body;
-                const newUser = await addUsers(userEmail, userFirstName, userLastName, userPass);
+                const newUser = await addUsers(userEmail, userFirstName, userLastName,userPass);
                 res.status(201).json(newUser);
         } catch (error) {
             console.error("Error adding user:", error);

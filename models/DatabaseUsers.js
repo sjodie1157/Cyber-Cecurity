@@ -138,4 +138,4 @@ const signIn = async (userEmail, userPass) => {
         throw error;
     }
 };
-export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn }
+export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn}
