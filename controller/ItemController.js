@@ -24,8 +24,8 @@ export default {
     },
     addItem: async (req, res) => {
         try {
-            const { prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity } = req.body;
-            const newItem = await addItem( prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity);
+            const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
+            const newItem = await addItem( prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity);
             res.status(201).json(newItem);
         } catch (error) {
             console.error("Error adding item:", error);
@@ -39,12 +39,12 @@ export default {
                 return res.status(404).json({ error: "Item not found" });
             }
 
-            const { prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity } = req.body;
+            const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
 
             const updatedFields = {};
             if (prodName) updatedFields.prodName = prodName;
             if (prodPrice) updatedFields.prodPrice = prodPrice;
-            if (prodDiscription) updatedFields.prodDiscription = prodDiscription;
+            if (prodDescription) updatedFields.prodDescription = prodDescription;
             if (prodImg) updatedFields.prodImg = prodImg;
             if (prodCategory) updatedFields.prodCategory = prodCategory;
             if (prodQuantity) updatedFields.prodQuantity = prodQuantity;
