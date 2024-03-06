@@ -17,7 +17,7 @@ const pool = createPool({
 const getItems = async () => {
     try {
         const [result] = await pool.query(`
-            SELECT prodID, prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity
+            SELECT prodID, prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity
             FROM bfqjmxyo9asyeushukci.Products;`);
         return result;
     } catch (error) {
@@ -30,7 +30,7 @@ const getItems = async () => {
 const getSingleItem = async (prodID) => {
     try {
         const [result] = await pool.query(`
-            SELECT prodID, prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity
+            SELECT prodID, prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity
             FROM bfqjmxyo9asyeushukci.Products
             WHERE prodID = ?`, [prodID]);
         return result;
@@ -41,17 +41,17 @@ const getSingleItem = async (prodID) => {
 };
 
 // Add an Item
-const addItem = async (prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity) => {
+const addItem = async (prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity) => {
     try {
         const [result] = await pool.query(`
-            INSERT INTO Products ( prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity)
+            INSERT INTO Products ( prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity)
             VALUES( ?, ?, ?, ?, ?, ?);`
-            , [prodName, prodPrice, prodDiscription, prodImg, prodCategory, prodQuantity]);
+            , [prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity]);
         const prodID = result.insertId;
         let item = {
             prodName,
             prodPrice,
-            prodDiscription,
+            prodDescription,
             prodImg,
             prodCategory,
             prodQuantity
