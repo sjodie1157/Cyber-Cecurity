@@ -22,7 +22,7 @@ const getItems = async () => {
         return result;
     } catch (error) {
         console.error("Error getting Items:", error);
-        throw error;
+        throw error
     }
 };
 
