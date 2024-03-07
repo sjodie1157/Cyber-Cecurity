@@ -38,7 +38,7 @@ const getSingleUser = async (userID) => {
         const [result] = await pool.query(`
             SELECT userID, userEmail, userFirstName, userLastName, userImg, userPass, userGender, userAge, userRole
             FROM bfqjmxyo9asyeushukci.Users
-            WHERE userID = ?`,[userID]);
+            WHERE userID = ?`, [userID]);
         return result;
     } catch (error) {
         console.error("Error getting users:", error);
@@ -106,7 +106,7 @@ const deleteUser = async (id) => {
         WHERE userID = ?`, [id]);
     return getUsers(User);
 };
- 
+
 // Sign in logic
 const signIn = async (userEmail, userPass) => {
     try {
@@ -118,7 +118,7 @@ const signIn = async (userEmail, userPass) => {
             SELECT userID, userEmail, userFirstName, userLastName, userImg, userPass, userGender, userAge, userRole 
             FROM bfqjmxyo9asyeushukci.Users
             WHERE userEmail = ?`, [userEmail]);
-        
+
         const user = users[0];
 
         if (!user) {
@@ -131,11 +131,11 @@ const signIn = async (userEmail, userPass) => {
             throw new Error('Incorrect password');
         }
 
-        const token = createToken({ userEmail, userPass });
+        const token = createToken({ userEmail, userPass, userFirstName, userRole });
         return { token, user };
     } catch (error) {
         console.error('Error signing in:', error);
         throw error;
     }
 };
-export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn}
+export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn }
