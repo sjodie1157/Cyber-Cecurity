@@ -1,49 +1,21 @@
-// import { createStore } from 'vuex';
-// const renderLink = 'https://cyber-cecurity.onrender.com/';
-
-// export default createStore({
-//   state: {
-//     users: null,
-//     cart: null
-//   },
-//   getters: {
-//   },
-//   mutations: {
-//     setUsers(state, value) {
-//       state.users = value;
-//     },
-//     setCart(state, value) {
-//       state.cart = value;
-//     }
-//   },
-//   actions: {
-//     async fetchUsers(context) {
-//       let res = await fetch(`${renderLink}Users`);
-//       context.commit('setUsers', await res.json());
-//     },
-//     async fetchCart(context) {
-//       let res = await fetch(`${renderLink}Cart/1`);
-//       context.commit('setCart', await res.json());
-//     }
-//   },
-//   modules: {
-//   }
-// });
-
-
 import { createStore } from 'vuex';
+const renderLink = 'https://cyber-cecurity-1.onrender.com/';
 
-const serverUrl = 'https://cyber-cecurity.onrender.com';
-/* eslint-disable */
 export default createStore({
   state: {
-    users: [],
+    users: null,
+    cart: null,
     signedUser: '',
     isLoggedIn: false
   },
+  getters: {
+  },
   mutations: {
-    setUsers(state, users) {
-      state.users = users;
+    setUsers(state, value) {
+      state.users = value;
+    },
+    setCart(state, value) {
+      state.cart = value;
     },
     setSignedUser(state, user) {
       state.signedUser = user;
@@ -54,23 +26,16 @@ export default createStore({
   },
   actions: {
     async fetchUsers(context) {
-            let res = await fetch(`${renderLink}Users`);
-            context.commit('setUsers', await res.json());
+      let res = await fetch(`${renderLink}Users`);
+      context.commit('setUsers', await res.json());
     },
-    async deleteUser({ dispatch }, userID) {
-      try {
-        await fetch(`${serverUrl}/removeUser/${userID}`, {
-          method: 'DELETE'
-        });
-        dispatch('fetchUsers');
-        alert('User has been removed');
-      } catch (error) {
-        console.error('Error deleting user', error);
-      }
+    async fetchCart(context) {
+      let res = await fetch(`${renderLink}Cart/1`);
+      context.commit('setCart', await res.json());
     },
     async signIn({ commit }, { userEmail, userPass }) {
       try {
-        let res = await fetch(`${serverUrl}/signIn`, {
+        let res = await fetch(`${renderLink}signIn`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -105,9 +70,8 @@ export default createStore({
       }
     }
   },
-  getters: {
-    currentUser(state) {
-      return state.signedUser;
-    }
+  modules: {
   }
 });
+
+
