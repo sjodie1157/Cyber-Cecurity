@@ -131,7 +131,7 @@ const signIn = async (userEmail, userPass) => {
             throw new Error('Incorrect password');
         }
 
-        const token = createToken({ userEmail, userPass, userFirstName, userRole });
+        const token = createToken({ userEmail, userPass });
         return { token, user };
     } catch (error) {
         console.error('Error signing in:', error);
