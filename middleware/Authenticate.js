@@ -5,8 +5,10 @@ const { sign, verify } = jwt;
 // Created webtoken function
 function createToken(user) {
     return sign({
+        userID: user.userID,
         userEmail: user.userEmail,
-        userPass: user.userPass
+        userPass: user.userPass,
+        userRole: user.userRole
     },
         process.env.SECRET_KEY,
         {

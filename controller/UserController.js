@@ -72,9 +72,9 @@ export default {
         }
     },
     signIn: async (req, res) => {
-        const { userEmail, userPass, userFirstName, userRole } = req.body;
+        const { userEmail, userPass } = req.body;
         try {
-            const { token, user } = await signIn(userEmail, userPass, userFirstName, userRole);
+            const { token, user } = await signIn(userEmail, userPass);
             res.cookie('webtoken', token, { httpOnly: false });
             res.json({ token, user });
         } catch (error) {
