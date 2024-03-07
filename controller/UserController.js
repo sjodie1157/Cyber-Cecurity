@@ -1,5 +1,5 @@
 // Imported from database functions
-import { getUsers, getSingleUser, addUsers, updateUser, deleteUser } from '../models/DatabaseUsers.js'
+import { getUsers, getSingleUser, addUsers, updateUser, deleteUser,signIn } from '../models/DatabaseUsers.js'
 
 // Imported Password Encryption
 import hash from 'bcrypt'

@@ -10,6 +10,9 @@ import ItemsRouter from './routes/ItemsRouter.js'
 // Cart Router Import
 import CartRouter from './routes/CartRouter.js'
 
+// Signin Router Import
+import signinRouter from './routes/SigninRouter.js'
+
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 
@@ -32,6 +35,7 @@ app.use(express.static('./static'));
 app.use('/Users', UsersRouter);
 app.use('/Items', ItemsRouter);
 app.use('/Cart', CartRouter);
+app.use('/signIn', signinRouter);
 
 // local host listener
 app.listen(port, () => {
