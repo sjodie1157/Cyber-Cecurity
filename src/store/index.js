@@ -62,7 +62,7 @@ export default createStore({
         localStorage.removeItem('userRole');
         commit('setSignedUser', null);
         commit('setIsLoggedIn', false);
-        // location.href = 'http://localhost:8080'
+        location.href = 'http://localhost:8080'
         $cookies.remove('webtoken')
       } catch (error) {
         console.error('Error signing out:', error);
