@@ -9,6 +9,7 @@ router.get('/:id', controller.getSingleUser);
 router.post('/', controller.addUsers)
 router.patch('/:id', controller.updateUser)
 router.delete('/:id', controller.deleteUser)
+router.post('/signIn', controller.signIn);
 
 // Exported router
 export default router;
