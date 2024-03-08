@@ -19,7 +19,7 @@ const addToCart = async (userID, prodID) => {
         const [result] = await pool.query(
             `INSERT INTO Cart (userID, prodID, quantity) 
             VALUES(?, ?, 1)`,
-            [userID[0], prodID]
+            [userID, prodID]
         );
 
         return result.insertId;
