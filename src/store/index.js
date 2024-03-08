@@ -4,6 +4,7 @@ const renderLink = 'https://cyber-cecurity-1.onrender.com/';
 export default createStore({
   state: {
     users: null,
+    items: null,
     cart: null,
     signedUser: '',
     isLoggedIn: false
@@ -13,6 +14,9 @@ export default createStore({
   mutations: {
     setUsers(state, value) {
       state.users = value;
+    },
+    setItems(state, value) {
+      state.items = value;
     },
     setCart(state, value) {
       state.cart = value;
@@ -28,6 +32,10 @@ export default createStore({
     async fetchUsers(context) {
       let res = await fetch(`${renderLink}Users`);
       context.commit('setUsers', await res.json());
+    },
+    async fetchItems(context) {
+      let res = await fetch(`${renderLink}Items`);
+      context.commit('setItems', await res.json());
     },
     async signIn({ commit }, { userEmail, userPass }) {
       try {
@@ -83,8 +91,50 @@ export default createStore({
         console.error('Error fetching cart:', error);
         // Handle the error, maybe show a message to the user
       }
-    }
-,
+    },
+    async addToCart(context, params) {
+      // Splitting cookies and trimming each one
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+      let userId;
+
+      // Looping through cookies to find the 'user' cookie
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'user') {
+          const user = JSON.parse(decodeURIComponent(value));
+          userId = user.userID;
+          break; // Exit the loop once userId is found
+        }
+      }
+
+      // If userId is not found, you might want to handle this scenario
+
+      // Creating data object with product ID
+      const data = {
+        prodID: params
+      };
+
+      // Adding the product to the user's cart if userId is found
+      if (userId) {
+        try {
+          const res = await fetch(`${renderLink}cart/${userId}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+          });
+
+          // Handle response if needed
+        } catch (error) {
+          console.error('Error adding product to cart:', error);
+          // Handle error
+        }
+      } else {
+        console.error('User ID not found. Unable to add product to cart.');
+        // Handle scenario where user ID is not found
+      }
+    },
     async signOut({ commit }) {
       try {
         commit('setSignedUser', null);
