@@ -30,11 +30,12 @@
 </template>
 
 <script>
+
 export default {
     data() {
         return {
             userEmail: "",
-            userPass: "",
+            userPass: ""
         };
     },
     methods: {
@@ -42,12 +43,10 @@ export default {
             try {
                 if (this.userEmail.trim() === "" || this.userPass.trim() === "") {
                     alert("Email and password cannot be blank");
-                    return;
                 }
-
                 await this.$store.dispatch("signIn", {
                     userEmail: this.userEmail,
-                    userPass: this.userPass,
+                    userPass: this.userPass
                 });
             } catch (error) {
                 console.error("Error signing in:", error);

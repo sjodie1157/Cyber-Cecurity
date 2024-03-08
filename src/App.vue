@@ -6,10 +6,32 @@
     <router-link to="/product">single product</router-link> |
     <router-link to="/inventory">Inventory</router-link> |
     <router-link to="/admin">admin</router-link> |
-    <router-link :to="'/cart/' + 1">Cart</router-link>
+    <router-link to="/cart">Cart</router-link>
   </nav>
   <router-view />
+  <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') ">
+    <div class="col">
+      <button @click="signOut">Sign Out</button>
+    </div>
+  </div>
+
 </template>
+
+<script>
+export default {
+  computed: {
+  },
+  methods: {
+    async signOut() {
+      try {
+        await this.$store.dispatch('signOut');
+      } catch (error) {
+        alert('Error signing out:', error);
+      }
+    }
+  }
+};
+</script>
 
 <style>
 #app {
