@@ -9,17 +9,23 @@
     <router-link to="/cart">Cart</router-link>
   </nav>
   <router-view />
-  <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') ">
+  <div v-if="$cookies.get('webtoken') !== undefined && $cookies.get('user') !== undefined">
     <div class="col">
       <button @click="signOut">Sign Out</button>
     </div>
   </div>
-
+  <div v-else>
+  </div>
 </template>
 
 <script>
 export default {
   computed: {
+    cookieValidation() {
+      if ($cookies.isKey('webtoken') === undefined || $cookies.isKey('user') === undefined) {
+        this.signOut();
+      }
+    }
   },
   methods: {
     async signOut() {
@@ -28,6 +34,10 @@ export default {
       } catch (error) {
         alert('Error signing out:', error);
       }
+    },
+    deleteCookies() {
+      this.$cookies.remove('webtoken');
+      this.$cookies.remove('user');
     }
   }
 };
