@@ -77,8 +77,12 @@ export default {
 
         try {
             const { token, user } = await signIn(userEmail, userPass);
-            res.cookie('webtoken', token, { httpOnly: false });
-            res.json({ token, user });
+                if (!userEmail, !userPass) {
+                    alert('ha try again')
+                } else {
+                    res.cookie('webtoken', token, { httpOnly: false });
+                    res.json({ token, user });
+                }
         } catch (error) {
             console.error("Error signing in:", error);
             res.status(401).json({ error: "Invalid credentials" });
