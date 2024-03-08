@@ -53,7 +53,7 @@ const getCartItems = async (userID) => {
     FROM Products p
     LEFT JOIN Cart c ON p.prodID = c.prodID
     WHERE c.userID = ?
-    GROUP BY p.prodID, p.prodName, p.prodPrice, p.prodImg;`,[userID[0]]);
+    GROUP BY p.prodID, p.prodName, p.prodPrice, p.prodImg;`,[userID]);
         return result;
     } catch (error) {
         console.error("Error getting cart items:", error);
