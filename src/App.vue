@@ -9,7 +9,7 @@
     <router-link to="/cart">Cart</router-link>
   </nav>
   <router-view />
-  <div v-if="$cookies.get('webtoken') !== undefined && $cookies.get('user') !== undefined">
+  <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
     <div class="col">
       <button @click="signOut">Sign Out</button>
     </div>
