@@ -1,5 +1,8 @@
 // Imported from database functions
-import { getUsers, getSingleUser, addUsers, updateUser, deleteUser,signIn } from '../models/DatabaseUsers.js'
+import { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn } from '../models/DatabaseUsers.js'
+
+// Imported verify a token
+import { verifyAToken } from '../middleware/Authenticate.js';
 
 // Imported Password Encryption
 import hash from 'bcrypt'
@@ -10,7 +13,7 @@ export default {
             const users = await getUsers();
             res.json(users);
         } catch (error) {
-            console.error('Error getting users');
+            console.error('Error getting users:', error.message);
             res.status(500).json({ error: 'Internal Server Error' });
         }
     },
@@ -22,17 +25,17 @@ export default {
             }
             res.json(user);
         } catch (error) {
-            console.error("Error getting one user:", error);
+            console.error("Error getting one user:", error.message);
             res.status(500).json({ error: "Internal Server Error" });
         }
     },
     addUsers: async (req, res) => {
         try {
             const { userEmail, userFirstName, userLastName, userPass } = req.body;
-                const newUser = await addUsers(userEmail, userFirstName, userLastName,userPass);
-                res.status(201).json(newUser);
+            const newUser = await addUsers(userEmail, userFirstName, userLastName, userPass);
+            res.status(201).json(newUser);
         } catch (error) {
-            console.error("Error adding user:", error);
+            console.error("Error adding user:", error.message);
             res.status(400).json({ error: error.message });
         }
     },
@@ -58,7 +61,7 @@ export default {
             const updatedUser = await updateUser(req.params.id, updatedFields);
             res.json(updatedUser);
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Error updating user:", error.message);
             res.status(500).json({ error: "Internal Server Error" });
         }
     },
@@ -67,24 +70,35 @@ export default {
             const deletedUser = await deleteUser(req.params.id);
             res.json({ message: "User deleted successfully" });
         } catch (error) {
-            console.error("Error deleting user:", error);
+            console.error("Error deleting user:", error.message);
             res.status(500).json({ error: "Internal Server Error" });
         }
     },
     signIn: async (req, res) => {
-
         const { userEmail, userPass } = req.body;
 
         try {
+            if (!userEmail || !userPass) {
+                return res.status(400).json({ error: "Email and password are required" });
+            }
+
             const { token, user } = await signIn(userEmail, userPass);
-                if (!userEmail, !userPass) {
-                    alert('ha try again')
-                } else {
-                    res.cookie('webtoken', token, { httpOnly: false });
-                    res.json({ token, user });
-                }
+
+            if (!token || !user) {
+                return res.status(401).json({ error: "Invalid credentials" });
+            }
+
+            const verifiedToken = await verifyAToken(req, res);
+
+            if (!verifiedToken) {
+                throw new Error('Invalid token');
+            }
+
+            res.cookie('webtoken', token, { httpOnly: false });
+            res.json({ token, user });
+
         } catch (error) {
-            console.error("Error signing in:", error);
+            console.error("Error signing in:", error.message);
             res.status(401).json({ error: "Invalid credentials" });
         }
     },
@@ -93,7 +107,7 @@ export default {
             res.clearCookie('webtoken');
             res.json({ message: 'Successfully signed out' });
         } catch (error) {
-            console.error("Error signing out:", error);
+            console.error("Error signing out:", error.message);
             res.status(500).json({ error: "Internal Server Error" });
         }
     }
