@@ -5,10 +5,8 @@ const { sign, verify } = jwt;
 // Created webtoken function
 function createToken(user) {
     return sign({
-        userID: user.userID,
         userEmail: user.userEmail,
-        userPass: user.userPass,
-        userRole: user.userRole
+        userPass: user.userPass
     },
         process.env.SECRET_KEY,
         {
@@ -18,24 +16,28 @@ function createToken(user) {
 }
 
 
-// veryfying webtoken
+// verifying webtoken
 function verifyAToken(req, res, next) {
-    const token = req?.headers['Authorisation']
-    if (token) {
-        if (verify(token, process.env.SECRET_KEY)) {
-            next()
-        } else {
-            res?.json({
-                status: res.statusCode,
-                msg: 'Incorrect User Details'
-            })
-        }
-    } else {
-        res?.json({
+    const token = req.headers['authorization'];
+    if (!token) {
+        return res.status(401).json({
             status: res.statusCode,
             msg: 'Please Login'
-        })
+        });
+    }
+
+    try {
+        const decoded = verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+        next();
+    } catch (error) {
+        console.error("Error verifying token:", error);
+        return res.status(401).json({
+            status: res.statusCode,
+            msg: 'Invalid Token'
+        });
     }
 }
+
 
 export { createToken, verifyAToken };
