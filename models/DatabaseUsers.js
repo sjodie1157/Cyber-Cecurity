@@ -130,14 +130,11 @@ const signIn = async (userEmail, userPass) => {
         if (!match) {
             throw new Error('Incorrect password');
         }
-
-        // // Passwords match, create and return a token
-        const token = createToken({ userEmail, userPass });
-        // return { token, user };
+        return { user };
     } catch (error) {
         console.error('Error signing in:', error.message);
         throw error;
     }
-
 };
-export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn , createToken }
+
+export { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn, createToken }
