@@ -29,14 +29,17 @@ export default createStore({
     }
   },
   actions: {
+    // Fetch all users
     async fetchUsers(context) {
       let res = await fetch(`${renderLink}Users`);
       context.commit('setUsers', await res.json());
     },
+    // Fetch all items
     async fetchItems(context) {
       let res = await fetch(`${renderLink}Items`);
       context.commit('setItems', await res.json());
     },
+    // Sign the user in
     async signIn({ commit }, { userEmail, userPass }) {
       try {
         let res = await fetch(`${renderLink}signIn`, {
@@ -47,15 +50,29 @@ export default createStore({
           credentials: 'include',
           body: JSON.stringify({ userEmail, userPass })
         });
-
+        // Create a cookie for the user with a webtoken if the cookie isn't undefined
         let { token, user } = await res.json();
-        // store data in cookies instead of local storage
-        document.cookie = `webtoken=${token};`;
-        document.cookie = `user=${JSON.stringify(user)};`;
 
-        commit('setSignedUser', user);
-        commit('setIsLoggedIn', true);
-        location.reload()
+        if (token !== undefined) {
+          document.cookie = `webtoken=${token};`;
+        } else {
+          alert('Incorrect Login Details');
+          return;
+        }
+        // Create a cookie for the user with values of the users id and role to be used later
+        if (user !== undefined) {
+          const userCookie = {
+            userID: user.userID,
+            userRole: user.userRole
+          };
+          document.cookie = `user=${JSON.stringify(userCookie)};`;
+        }
+
+        if (user !== undefined) {
+          commit('setSignedUser', user);
+          commit('setIsLoggedIn', true);
+          location.reload();
+        }
       } catch (error) {
         console.error('Error signing in:', error);
         throw error;
@@ -97,18 +114,14 @@ export default createStore({
       const cookies = document.cookie.split(';').map(cookie => cookie.trim());
       let userId;
 
-      // Looping through cookies to find the 'user' cookie
       for (const cookie of cookies) {
         const [name, value] = cookie.split('=');
         if (name.trim() === 'user') {
           const user = JSON.parse(decodeURIComponent(value));
           userId = user.userID;
-          break; // Exit the loop once userId is found
+          break;
         }
       }
-
-      // If userId is not found, you might want to handle this scenario
-
       // Creating data object with product ID
       const data = {
         prodID: params
@@ -124,25 +137,22 @@ export default createStore({
             },
             body: JSON.stringify(data)
           });
-
-          // Handle response if needed
         } catch (error) {
           console.error('Error adding product to cart:', error);
-          // Handle error
         }
       } else {
         console.error('User ID not found. Unable to add product to cart.');
-        // Handle scenario where user ID is not found
       }
     },
     async signOut({ commit }) {
       try {
+        // Delete the cookies when signed out by using a backdating method
         commit('setSignedUser', null);
         commit('setIsLoggedIn', false);
-        
-        document.cookie = 'webtoken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        document.cookie = 'user=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-        
+
+        document.cookie = 'webtoken=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
+        document.cookie = 'user=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
+
         // change directory when firebase deploy to home
         location.href = 'http://localhost:8080'
       } catch (error) {
