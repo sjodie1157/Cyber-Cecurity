@@ -1,5 +1,5 @@
 // Imported from database functions
-import { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn } from '../models/DatabaseUsers.js'
+import { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn, createToken } from '../models/DatabaseUsers.js'
 
 // Imported verify a token
 import { verifyAToken } from '../middleware/Authenticate.js';
@@ -82,26 +82,37 @@ export default {
                 return res.status(400).json({ error: "Email and password are required" });
             }
 
-            const { token, user } = await signIn(userEmail, userPass);
+            // Attempt to sign in the user
+            const signInResult = await signIn(userEmail, userPass);
 
-            if (!token || !user) {
+            // Check if the signInResult is falsy or if it does not contain a token
+            if (!signInResult || !signInResult.token) {
+                console.error("Invalid credentials. signInResult:", signInResult);
                 return res.status(401).json({ error: "Invalid credentials" });
             }
 
+            // Verify the token
             const verifiedToken = await verifyAToken(req, res);
 
+            // Check if the token is not verified
             if (!verifiedToken) {
+                console.error("Invalid token:", verifiedToken);
                 throw new Error('Invalid token');
             }
 
+            // If everything is okay, set the cookie and send the token and user data
+            const { token, user } = signInResult;
             res.cookie('webtoken', token, { httpOnly: false });
             res.json({ token, user });
 
         } catch (error) {
             console.error("Error signing in:", error.message);
-            res.status(401).json({ error: "Invalid credentials" });
+            res.status(500).json({ error: "Internal Server Error" });
         }
     },
+
+
+
     signOut: async (req, res) => {
         try {
             res.clearCookie('webtoken');
