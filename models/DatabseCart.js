@@ -32,17 +32,41 @@ const addToCart = async (userID, prodID) => {
 // Remove item from cart
 const removeFromCart = async (userID, prodID) => {
     try {
-        const [result] = await pool.query(
-            `DELETE FROM Cart WHERE userID = ? AND prodID = ?`,
-            [userID[0], prodID]
+        const [existingProduct] = await pool.query(
+            `SELECT quantity FROM Cart 
+            WHERE userID = ? AND prodID = ?`,
+            [userID, prodID]
         );
 
-        return result.affectedRows > 0;
+        if (existingProduct.length === 0) {
+            throw new Error("Product not found in the cart.");
+        }
+
+        const currentQuantity = existingProduct[0].quantity;
+        let removeMessage = '';
+
+        if (currentQuantity > 1) {
+            await pool.query(
+                `UPDATE Cart 
+                SET quantity = quantity - 1 
+                WHERE userID = ? AND prodID = ?`,
+                [userID, prodID]
+            );
+            removeMessage = "Quantity of the product decremented by one.";
+        } else {
+            await pool.query(
+                `DELETE FROM Cart 
+                WHERE userID = ? AND prodID = ?`,
+                [userID, prodID]
+            );
+            removeMessage = "Product removed from the cart.";
+        }
+        return removeMessage;
     } catch (error) {
-        console.error("Error removing from cart:", error);
         throw error;
     }
 };
+
 
 // Get cart items
 const getCartItems = async (userID) => {

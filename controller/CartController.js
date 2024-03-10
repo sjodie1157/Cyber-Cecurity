@@ -15,14 +15,15 @@ export default {
     removeFromCart: async (req, res) => {
         try {
             const userID = req.params.id;
-            const { prodID, quantity } = req.body;
-            const deletedFromCart = await removeFromCart(userID, prodID, quantity);
-            res.json({ message: "Item deleted successfully" }); 
+            const { prodID } = req.body;
+            const removeMessage = await removeFromCart(userID, prodID);
+            res.json({ message: removeMessage });
         } catch (error) {
             console.error("Error deleting Item From Cart:", error);
             res.status(500).json({ error: "Internal Server Error" });
         }
     },
+
     addToCart: async (req, res) => {
         try {
             const userID = req.params.id;
