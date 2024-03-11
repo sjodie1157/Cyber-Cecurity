@@ -1,8 +1,9 @@
 <template>
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SignIn" id="modalBtn">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SignIn" id="signInBtn">
             login
         </button>
+
         <div class="modal fade" id="SignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -62,7 +63,7 @@ export default {
 </script>
 
 <style scoped>
-#modalBtn {
+#signInBtn {
     background-color: transparent;
     border: none;
     color: black;

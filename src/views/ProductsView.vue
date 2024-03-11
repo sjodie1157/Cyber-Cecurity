@@ -5,7 +5,9 @@
         <div v-if="items">
             <div v-for="item in items" :key="item.prodID">
                 {{ item.prodName }}
-                {{ item.prodID }} <button @click="addToCart(item.prodID)">Add to cart</button>
+                {{ item.prodPrice }}
+                {{ item.prodDescription }}
+                <button @click="addToCart(item.prodID)">Add to cart</button>
             </div>
         </div>
     </div>

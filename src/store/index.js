@@ -63,6 +63,7 @@ export default createStore({
         if (user !== undefined) {
           const userCookie = {
             userID: user.userID,
+            userFirstName: user.userFirstName,
             userRole: user.userRole
           };
           document.cookie = `user=${JSON.stringify(userCookie)};`;
@@ -95,22 +96,17 @@ export default createStore({
         if (!userId) {
           throw new Error('User ID not found in cookie');
         }
-
-        // Fetch cart data using the user ID
         let res = await fetch(`${renderLink}Cart/${userId}`);
         if (!res.ok) {
           throw new Error('Failed to fetch cart data');
         }
-
-        // Set the cart in the store
         context.commit('setCart', await res.json());
       } catch (error) {
         console.error('Error fetching cart:', error);
-        // Handle the error, maybe show a message to the user
       }
     },
+    // Add to Cart function
     async addToCart(context, params) {
-      // Splitting cookies and trimming each one
       const cookies = document.cookie.split(';').map(cookie => cookie.trim());
       let userId;
 
@@ -122,12 +118,10 @@ export default createStore({
           break;
         }
       }
-      // Creating data object with product ID
       const data = {
         prodID: params
       };
 
-      // Adding the product to the user's cart if userId is found
       if (userId) {
         try {
           const res = await fetch(`${renderLink}cart/${userId}`, {
@@ -142,6 +136,35 @@ export default createStore({
         }
       } else {
         console.error('User ID not found. Unable to add product to cart.');
+      }
+    },
+    async removeFromCart(context, params) {
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+      let userId;
+
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'user') {
+          const user = JSON.parse(decodeURIComponent(value));
+          userId = user.userID;
+          const data = {
+            prodID: params
+          };
+
+          try {
+            const res = await fetch(`${renderLink}cart/${userId}`, {
+              method: "DELETE",
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+            location.reload()
+          } catch (error) {
+            console.error('Unable to delete item from cart');
+          }
+          break;
+        }
       }
     },
     async signOut({ commit }) {

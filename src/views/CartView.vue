@@ -1,6 +1,11 @@
 <template>
-    <div>
-        {{ cart }}
+    <div v-if="cart">
+        <div v-for="item in cart" :key="item.prodID">
+            {{ item.prodName }}
+            {{ item.prodID }}
+            {{ item.totalQuantity }}
+            <button @click="removeFromCart(item.prodID)">delete item</button>
+        </div>
     </div>
 </template>
 
@@ -13,6 +18,11 @@
     computed: {
         cart() {
             return this.$store.state.cart;
+        }
+    },
+    methods: {
+        removeFromCart(prodID) {
+            this.$store.dispatch('removeFromCart', prodID);
         }
     },
     async mounted() {

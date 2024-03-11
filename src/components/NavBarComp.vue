@@ -1,23 +1,116 @@
 <template>
     <div>
-        <nav>
-            <router-link to="/">Home</router-link> |
-            <router-link to="/about">About</router-link> |
-            <router-link to="/products">Products</router-link> |
-            <router-link to="/product">single product</router-link> |
-            <router-link to="/inventory">Inventory</router-link> |
-            <router-link to="/admin">admin</router-link> |
-            <router-link to="/cart">Cart</router-link>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/">Home</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/about">About</router-link>
+                        </li>
+                        <li class="nav-item">
+                            <router-link class="nav-link" to="/products">Products</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isWorker">
+                            <router-link class="nav-link" to="/inventory">Inventory</router-link>
+                        </li>
+                        <li class="nav-item" v-if="isAdmin">
+                            <router-link class="nav-link" to="/admin">admin</router-link>
+                        </li>
+                        <li class="nav-item"
+                            v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
+                            <router-link class="nav-link" to="/cart">Cart</router-link>
+                        </li>
+                        <li class="nav-item" v-if="!isAdmin && !isWorker">
+                            <router-link class="nav-link" to="/contact">Contact</router-link>
+                        </li>
+                    </ul>
+                    <span class="d-flex ms-auto" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
+                        {{ userFirstName }} <button @click="signOut">Sign Out</button>
+                    </span>
+                    <span class="d-flex ms-auto" v-else>
+                        <LogInModal />
+                        <SignupComp />
+                    </span>
+                </div>
+            </div>
         </nav>
     </div>
+    <router-view />
 </template>
 
 <script>
-    export default {
-        
+import LogInModal from './LogInModal.vue';
+import SignupComp from './SignupComp.vue';
+
+
+export default {
+    components: {
+        LogInModal,
+        SignupComp
+    },
+    computed: {
+        cookieValidation() {
+            if ($cookies.isKey('webtoken') === undefined || $cookies.isKey('user') === undefined) {
+                this.signOut();
+            }
+        },
+        isAdmin() {
+            let userData = this.$cookies.get("user");
+            return userData && userData.userRole === "Admin";
+        },
+        isWorker() {
+            let userData = this.$cookies.get("user");
+            return userData && userData.userRole === "Worker";
+        }
+    },
+
+    methods: {
+        async signOut() {
+            try {
+                await this.$store.dispatch('signOut');
+            } catch (error) {
+                alert('Error signing out:', error);
+            }
+        },
+        deleteCookies() {
+            this.$cookies.remove('webtoken');
+            this.$cookies.remove('user');
+        }
     }
+}
 </script>
 
 <style scoped>
+.nav-item .nav-link {
+    position: relative;
+    transition: all .3s;
+}
 
+.nav-item .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background-color: blue;
+    visibility: hidden;
+}
+
+.nav-item,
+.nav-link:hover::before {
+    visibility: visible;
+}
+
+nav a.router-link-active {
+    color: white;
+    background-color: blue;
+}
 </style>
