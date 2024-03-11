@@ -32,7 +32,13 @@
                         </li>
                     </ul>
                     <span class="d-flex ms-auto" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
-                        {{ userFirstName }} <button @click="signOut">Sign Out</button>
+                        <h4>{{ userloggedinName }}</h4>
+                        <img :src="userImage || ''" alt="loggedInUser"
+                            v-if="userImage !== null && userImage !== undefined">
+                        <div v-else>
+                            <h5>{{ userloggedinName.charAt(0) }}</h5>
+                        </div>
+                        <button @click="signOut">Sign Out</button>
                     </span>
                     <span class="d-flex ms-auto" v-else>
                         <LogInModal />
@@ -68,6 +74,14 @@ export default {
         isWorker() {
             let userData = this.$cookies.get("user");
             return userData && userData.userRole === "Worker";
+        },
+        userloggedinName() {
+            let userData = this.$cookies.get("user");
+            return userData && userData.userFirstName;
+        },
+        userImage() {
+            let userData = this.$cookies.get("user");
+            return userData && userData.userImg;
         }
     },
 
@@ -112,5 +126,23 @@ export default {
 nav a.router-link-active {
     color: white;
     background-color: blue;
+}
+
+img[alt="loggedInUser"] {
+    width: 35px;
+    height: 35px;
+    margin: 0 2em;
+    border-radius: 10pc;
+}
+
+h5 {
+    margin: 0 1em;
+    width: 25px;
+    height: 25px;
+    border-radius: 15pc;
+    display: flex;
+    justify-content: center;
+    background-color: aqua;
+
 }
 </style>

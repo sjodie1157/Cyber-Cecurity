@@ -64,7 +64,8 @@ export default createStore({
           const userCookie = {
             userID: user.userID,
             userFirstName: user.userFirstName,
-            userRole: user.userRole
+            userRole: user.userRole,
+            userImg: user.userImg
           };
           document.cookie = `user=${JSON.stringify(userCookie)};`;
         }
