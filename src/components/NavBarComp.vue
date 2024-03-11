@@ -21,7 +21,7 @@
                             <router-link class="nav-link" to="/inventory">Inventory</router-link>
                         </li>
                         <li class="nav-item" v-if="isAdmin">
-                            <router-link class="nav-link" to="/admin">admin</router-link>
+                            <router-link class="nav-link" to="/admin">Admin</router-link>
                         </li>
                         <li class="nav-item"
                             v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
@@ -31,8 +31,9 @@
                             <router-link class="nav-link" to="/contact">Contact</router-link>
                         </li>
                     </ul>
-                    <span class="d-flex ms-auto" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
-                        <h4>{{ userloggedinName }}</h4>
+                    <span class="d-flex ms-auto align-items-center"
+                        v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
+                        <h4 class="d-flex align-items-center">{{ userloggedinName }}</h4>
                         <img :src="userImage || ''" alt="loggedInUser"
                             v-if="userImage !== null && userImage !== undefined">
                         <div v-else>
@@ -137,12 +138,15 @@ img[alt="loggedInUser"] {
 
 h5 {
     margin: 0 1em;
-    width: 25px;
-    height: 25px;
+    width: 35px;
+    height: 35px;
     border-radius: 15pc;
     display: flex;
+    font-weight: 800;
     justify-content: center;
-    background-color: aqua;
-
+    align-items: center;
+    background-color: blue;
+    color: white;
 }
+
 </style>
