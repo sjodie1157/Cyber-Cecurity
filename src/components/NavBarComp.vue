@@ -1,58 +1,72 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg bg-body-transparent fixed-top" :class="{ 'bg-white': isScrolled }">
+        <nav class="navbar bg-body-trasnparent fixed-top" :class="{ 'bg-white': isScrolled }">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="navbar-nav">
-                        <li class="nav-item">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/">Home</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/about">About</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/products">Products</router-link>
-                        </li>
-                        <li class="nav-item" v-if="isWorker">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/inventory">Inventory</router-link>
-                        </li>
-                        <li class="nav-item" v-if="isAdmin">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/admin">Admin</router-link>
-                        </li>
-                        <li class="nav-item"
-                            v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/cart">Cart</router-link>
-                        </li>
-                        <li class="nav-item" v-if="!isAdmin && !isWorker">
-                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
-                                to="/contact">Contact</router-link>
-                        </li>
-                    </ul>
-                    <span class="d-flex ms-auto align-items-center"
+                <div class="col">
+                    <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
+                        aria-label="Toggle navigation">
+                        <h6 :class="{ 'black-text': isScrolled }"><i class="bi bi-list"> </i> Pages</h6>
+                    </button>
+                </div>
+                <div class="col">
+                    <h1 :class="{ 'black-text': isScrolled }"><span>Cy</span>ber <span>Secu</span>rity</h1>
+                </div>
+                <div class="col">
+                    <span class="d-flex ms-auto justify-content-end align-items-center"
                         v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
-                        <h4 class="d-flex align-items-center" :class="{ 'black-text': isScrolled }">{{ userloggedinName
-                            }}</h4>
-                        <img :src="userImage || ''" alt="loggedInUser"
-                            v-if="userImage !== null && userImage !== undefined">
-                        <div v-else>
-                            <h5 :class="{ 'black-text': isScrolled }">{{ userloggedinName.charAt(0) }}</h5>
+                        <div class="col-5">
+                            <h5 class="d-flex justify-content-end" :class="{ 'black-text': isScrolled }">{{
+            userloggedinName }}</h5>
                         </div>
-                        <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out</button>
+                        <div class="col-6 w-auto d-flex justify-content-end">
+                            <img :src="userImage || ''" alt="loggedInUser"
+                                v-if="userImage !== null && userImage !== undefined">
+                            <div v-else>
+                                <h3 :class="{ 'black-text': isScrolled }">{{ userloggedinName.charAt(0) }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-6 w-auto d-flex justify-content-end">
+                            <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out</button>
+                        </div>
                     </span>
-                    <span class="d-flex ms-auto" v-else>
+                    <span class="d-flex justify-content-end" v-else>
                         <LogInModal />
                         <SignupComp />
                     </span>
+                </div>
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
+                    aria-labelledby="offcanvasNavbarLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <router-link class="nav-link" to="/">Home</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link class="nav-link" to="/about">About</router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link class="nav-link" to="/products">Products</router-link>
+                            </li>
+                            <li class="nav-item" v-if="isWorker">
+                                <router-link class="nav-link" to="/inventory">Inventory</router-link>
+                            </li>
+                            <li class="nav-item" v-if="isAdmin">
+                                <router-link class="nav-link" to="/admin">Admin</router-link>
+                            </li>
+                            <li class="nav-item"
+                                v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
+                                <router-link class="nav-link" to="/cart">Cart</router-link>
+                            </li>
+                            <li class="nav-item" v-if="!isAdmin && !isWorker">
+                                <router-link class="nav-link" to="/contact">Contact</router-link>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -123,15 +137,19 @@ export default {
     transition: background-color 0.3s ease;
 }
 
+span {
+    color: rgb(0, 89, 255);
+}
+
 .black-text {
-    color: white !important;
-    transition: color 0.3s ease;
+    color: black !important;
+    transition: all 0.3s;
 }
 
 .nav-item .nav-link {
     position: relative;
     transition: all .3s;
-    color: white;
+    color: black;
 }
 
 .nav-item .nav-link::before {
@@ -151,7 +169,7 @@ export default {
 }
 
 nav a.router-link-active {
-    color: white;
+    color: black;
     background-color: rgba(1, 1, 210, 0.529);
 }
 
@@ -162,28 +180,54 @@ img[alt="loggedInUser"] {
     border-radius: 10pc;
 }
 
-h5 {
-    margin: 0 1em;
-    width: 35px;
-    height: 35px;
-    border-radius: 15pc;
-    display: flex;
-    font-weight: 800;
-    justify-content: center;
-    align-items: center;
-    background-color: blue;
-    color: white;
-}
-
-h4 {
-    color: white;
-}
 
 button {
-    border: solid 2px white;
+    display: flex;
+    align-items: center;
+    font-size: 20px;
     color: white;
     border-radius: .4pc;
+    border: none;
     background-color: transparent;
     padding: .3rem;
+    transition: all .3s;
+}
+
+h1 {
+    color: white;
+}
+
+h5 {
+    color: white;
+    margin-bottom: 0;
+}
+
+button:hover {
+    background-color: rgb(0, 89, 255);
+}
+
+button.navbar-toggler {
+    border: none;
+}
+
+button.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+div.v-else button {
+    border: none;
+}
+
+h6 {
+    background-color: transparent;
+    border-radius: .4pc;
+    font-size: 20px;
+    padding: 5px;
+    transition: all .5s;
+    margin: 0;
+}
+
+h6:hover {
+    background-color: rgb(0, 89, 255);
 }
 </style>

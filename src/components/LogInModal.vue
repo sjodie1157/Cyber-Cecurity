@@ -78,10 +78,11 @@ export default {
     background-color: transparent;
     border: none;
     color: white;
-    transition: color 0.3s ease;
+    transition: all 0.3s;
+    margin: 0 2em;
 }
 
 .black-text {
-    color: blue !important;
+    color: black !important;
 }
 </style>
