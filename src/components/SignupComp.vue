@@ -99,6 +99,6 @@ export default {
 }
 
 .black-text {
-    color: blue !important;
+    color: black !important;
 }
 </style>
