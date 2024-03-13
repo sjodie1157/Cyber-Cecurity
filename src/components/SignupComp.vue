@@ -1,38 +1,38 @@
 <template>
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#signupModal"
-            id="modalBtn">
+        <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#signupModal"
+            id="modalBtn" :class="{ 'black-text': isScrolled }">
             Sign Up
         </button>
         <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="signupModalLabel">Sign Up</h5>
+                        <h5 class="modal-title" id="signupModalLabel" :class="{ 'black-text': isScrolled }">Sign Up</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <form @submit.prevent="addUser">
                             <div class="mb-3">
-                                <label for="userFirstName" class="form-label">First Name:</label>
+                                <label for="userFirstName" class="form-label black-text">First Name:</label>
                                 <input type="text" class="form-control" id="userFirstName" v-model="user.userFirstName"
                                     required>
                             </div>
                             <div class="mb-3">
-                                <label for="userLastName" class="form-label">Last Name:</label>
+                                <label for="userLastName" class="form-label black-text">Last Name:</label>
                                 <input type="text" class="form-control" id="userLastName" v-model="user.userLastName"
                                     required>
                             </div>
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email:</label>
+                                <label for="email" class="form-label black-text">Email:</label>
                                 <input type="email" class="form-control" id="email" v-model="user.userEmail" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password:</label>
+                                <label for="password" class="form-label black-text">Password:</label>
                                 <input type="password" class="form-control" id="password" v-model="user.userPass"
                                     required>
                             </div>
-                            <button type="submit" class="btn btn-primary">Sign Up</button>
+                            <button type="submit" class="btn btn-primary modal-button">Sign Up</button>
                         </form>
                     </div>
                 </div>
@@ -50,7 +50,8 @@ export default {
                 userLastName: '',
                 userEmail: '',
                 userPass: ''
-            }
+            },
+            isScrolled: false
         };
     },
     methods: {
@@ -73,17 +74,31 @@ export default {
 
                 alert('User has been added')
             } catch (error) {
-                console.error("error adding user :" +error);
+                console.error("error adding user :" + error);
             }
         },
+        handleScroll() {
+            this.isScrolled = window.scrollY > 0;
+        },
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 };
 </script>
 
 <style scoped>
-#modalBtn {
+.modal-button {
     background-color: transparent;
     border: none;
-    color: black;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.black-text {
+    color: blue !important;
 }
 </style>

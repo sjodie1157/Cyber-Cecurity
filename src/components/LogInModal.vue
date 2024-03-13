@@ -1,6 +1,7 @@
 <template>
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#SignIn" id="signInBtn">
+        <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#SignIn"
+            id="signInBtn" :class="{ 'black-text': isScrolled }">
             login
         </button>
 
@@ -21,7 +22,7 @@
                                 <label for="password" class="col-form-label">Password:</label>
                                 <input v-model="userPass" type="password" class="form-control" id="password" required />
                             </div>
-                            <button type="submit" class="btn btn-primary">Sign In</button>
+                            <button type="submit" class="btn btn-primary modal-button">Sign In</button>
                         </form>
                     </div>
                 </div>
@@ -36,7 +37,8 @@ export default {
     data() {
         return {
             userEmail: "",
-            userPass: ""
+            userPass: "",
+            isScrolled: false
         };
     },
     methods: {
@@ -57,15 +59,29 @@ export default {
                     alert("Error signing in. Please try again.");
                 }
             }
-        }
+        },
+        handleScroll() {
+            this.isScrolled = window.scrollY > 0;
+        },
     },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
 };
 </script>
 
 <style scoped>
-#signInBtn {
+.modal-button {
     background-color: transparent;
     border: none;
-    color: black;
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.black-text {
+    color: blue !important;
 }
 </style>

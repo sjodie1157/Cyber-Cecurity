@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-body-transparent fixed-top" :class="{ 'bg-white': isScrolled }">
             <div class="container-fluid">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                     aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -9,37 +9,45 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/">Home</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/">Home</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/about">About</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/about">About</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link" to="/products">Products</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/products">Products</router-link>
                         </li>
                         <li class="nav-item" v-if="isWorker">
-                            <router-link class="nav-link" to="/inventory">Inventory</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/inventory">Inventory</router-link>
                         </li>
                         <li class="nav-item" v-if="isAdmin">
-                            <router-link class="nav-link" to="/admin">Admin</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/admin">Admin</router-link>
                         </li>
                         <li class="nav-item"
                             v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
-                            <router-link class="nav-link" to="/cart">Cart</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/cart">Cart</router-link>
                         </li>
                         <li class="nav-item" v-if="!isAdmin && !isWorker">
-                            <router-link class="nav-link" to="/contact">Contact</router-link>
+                            <router-link class="nav-link" :class="{ 'black-text': isScrolled }"
+                                to="/contact">Contact</router-link>
                         </li>
                     </ul>
                     <span class="d-flex ms-auto align-items-center"
                         v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
-                        <h4 class="d-flex align-items-center">{{ userloggedinName }}</h4>
+                        <h4 class="d-flex align-items-center" :class="{ 'black-text': isScrolled }">{{ userloggedinName
+                            }}</h4>
                         <img :src="userImage || ''" alt="loggedInUser"
                             v-if="userImage !== null && userImage !== undefined">
                         <div v-else>
-                            <h5>{{ userloggedinName.charAt(0) }}</h5>
+                            <h5 :class="{ 'black-text': isScrolled }">{{ userloggedinName.charAt(0) }}</h5>
                         </div>
-                        <button @click="signOut">Sign Out</button>
+                        <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out</button>
                     </span>
                     <span class="d-flex ms-auto" v-else>
                         <LogInModal />
@@ -56,18 +64,23 @@
 import LogInModal from './LogInModal.vue';
 import SignupComp from './SignupComp.vue';
 
-
 export default {
     components: {
         LogInModal,
         SignupComp
     },
+    data() {
+        return {
+            isScrolled: false
+        };
+    },
+    mounted() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    beforeDestroy() {
+        window.removeEventListener('scroll', this.handleScroll);
+    },
     computed: {
-        cookieValidation() {
-            if ($cookies.isKey('webtoken') === undefined || $cookies.isKey('user') === undefined) {
-                this.signOut();
-            }
-        },
         isAdmin() {
             let userData = this.$cookies.get("user");
             return userData && userData.userRole === "Admin";
@@ -85,7 +98,6 @@ export default {
             return userData && userData.userImg;
         }
     },
-
     methods: {
         async signOut() {
             try {
@@ -97,15 +109,29 @@ export default {
         deleteCookies() {
             this.$cookies.remove('webtoken');
             this.$cookies.remove('user');
-        }
+        },
+        handleScroll() {
+            this.isScrolled = window.scrollY > 0;
+        },
     }
 }
 </script>
 
 <style scoped>
+.bg-white {
+    background-color: rgba(255, 255, 255, 0.59) !important;
+    transition: background-color 0.3s ease;
+}
+
+.black-text {
+    color: white !important;
+    transition: color 0.3s ease;
+}
+
 .nav-item .nav-link {
     position: relative;
     transition: all .3s;
+    color: white;
 }
 
 .nav-item .nav-link::before {
@@ -115,7 +141,7 @@ export default {
     left: 0;
     width: 100%;
     height: 5px;
-    background-color: blue;
+    background-color: rgba(1, 1, 210, 0.529);
     visibility: hidden;
 }
 
@@ -126,7 +152,7 @@ export default {
 
 nav a.router-link-active {
     color: white;
-    background-color: blue;
+    background-color: rgba(1, 1, 210, 0.529);
 }
 
 img[alt="loggedInUser"] {
@@ -149,4 +175,15 @@ h5 {
     color: white;
 }
 
+h4 {
+    color: white;
+}
+
+button {
+    border: solid 2px white;
+    color: white;
+    border-radius: .4pc;
+    background-color: transparent;
+    padding: .3rem;
+}
 </style>
