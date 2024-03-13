@@ -1,8 +1,9 @@
 <template>
   <div class="home">
-    <h2>Home Page</h2>
-  </div>
+    <video src="../assets/CSS/videos/Cyber Cecurity.mp4" autoplay loop>
+    </video>
 
+  </div>
 </template>
 
 <script>
@@ -11,3 +12,9 @@ export default {
   }
 }
 </script>
+<style scoped>
+video {
+  width: 100%;
+  height: auto;
+}
+</style>
