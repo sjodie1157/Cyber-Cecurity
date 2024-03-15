@@ -27,7 +27,8 @@
                             </div>
                         </div>
                         <div class="col-6 w-auto d-flex justify-content-end">
-                            <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out</button>
+                            <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out<i
+                                    class="bi bi-box-arrow-right"></i></button>
                         </div>
                     </span>
                     <span class="d-flex justify-content-end" v-else>
@@ -38,34 +39,47 @@
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Offcanvas</h5>
+                        <h3 class="NavNameIco" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">{{
+            userloggedinName.charAt(0) }}</h3>
+                        <h4 class="offcanvas-title text-center" id="offcanvasNavbarLabel"><span>Cy</span>ber
+                            <span>Secu</span>rity
+                        </h4>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/">Home</router-link>
+                                <router-link class="nav-link me-start" to="/"><i class="bi bi-house-lock"></i>
+                                    Home</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/about">About</router-link>
+                                <router-link class="nav-link" to="/about"><i class="bi bi-diagram-3"></i> About
+                                    Us</router-link>
                             </li>
                             <li class="nav-item">
-                                <router-link class="nav-link" to="/products">Products</router-link>
+                                <router-link class="nav-link" to="/products"><i class="bi bi-basket3"></i>
+                                    Products</router-link>
                             </li>
                             <li class="nav-item" v-if="isWorker">
-                                <router-link class="nav-link" to="/inventory">Inventory</router-link>
+                                <router-link class="nav-link" to="/inventory"><i class="bi bi-pie-chart"></i>
+                                    Inventory</router-link>
                             </li>
                             <li class="nav-item" v-if="isAdmin">
-                                <router-link class="nav-link" to="/admin">Admin</router-link>
+                                <router-link class="nav-link" to="/5465351321asdad48w6521a5sd"><i class="bi bi-database-fill-gear"></i>
+                                    Admin</router-link>
                             </li>
                             <li class="nav-item"
                                 v-if="$cookies.isKey('webtoken') && $cookies.isKey('user') && !isAdmin && !isWorker">
-                                <router-link class="nav-link" to="/cart">Cart</router-link>
+                                <router-link class="nav-link" to="/cart"><i class="bi bi-cart3"></i> Cart</router-link>
                             </li>
                             <li class="nav-item" v-if="!isAdmin && !isWorker">
-                                <router-link class="nav-link" to="/contact">Contact</router-link>
+                                <router-link class="nav-link" to="/contact"><i class="bi bi-telephone-inbound"></i>
+                                    Contact</router-link>
                             </li>
                         </ul>
+                        <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
+                            <UpdateUser />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -77,11 +91,13 @@
 <script>
 import LogInModal from './LogInModal.vue';
 import SignupComp from './SignupComp.vue';
+import UpdateUser from './UserUpdate.vue';
 
 export default {
     components: {
         LogInModal,
-        SignupComp
+        SignupComp,
+        UpdateUser
     },
     data() {
         return {
@@ -126,11 +142,10 @@ export default {
         },
         handleScroll() {
             this.isScrolled = window.scrollY > 0;
-        },
+        }
     }
 }
 </script>
-
 <style scoped>
 .bg-white {
     background-color: rgba(255, 255, 255, 0.59) !important;
@@ -150,6 +165,12 @@ span {
     position: relative;
     transition: all .3s;
     color: black;
+    display: flex;
+    justify-content: start;
+}
+
+.nav-item .router-link-active {
+    color: white !important;
 }
 
 .nav-item .nav-link::before {
@@ -159,8 +180,9 @@ span {
     left: 0;
     width: 100%;
     height: 5px;
-    background-color: rgba(1, 1, 210, 0.529);
+    background-color: rgb(0, 89, 255);
     visibility: hidden;
+    border-radius: .3pc;
 }
 
 .nav-item,
@@ -169,8 +191,9 @@ span {
 }
 
 nav a.router-link-active {
-    color: black;
-    background-color: rgba(1, 1, 210, 0.529);
+    color: white;
+    background-color: rgb(0, 89, 255);
+    border-radius: .3pc;
 }
 
 img[alt="loggedInUser"] {
@@ -184,7 +207,7 @@ img[alt="loggedInUser"] {
 button {
     display: flex;
     align-items: center;
-    font-size: 20px;
+    font-size: 16px;
     color: white;
     border-radius: .4pc;
     border: none;
@@ -200,6 +223,7 @@ h1 {
 h5 {
     color: white;
     margin-bottom: 0;
+    font-size: 16px;
 }
 
 button:hover {
@@ -229,5 +253,33 @@ h6 {
 
 h6:hover {
     background-color: rgb(0, 89, 255);
+}
+
+.offcanvas {
+    background-color: rgba(255, 255, 255, 0.8);
+    transition: all .3s;
+}
+
+.offcanvas:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+i {
+    margin: 0 1em;
+    font-size: 16px;
+}
+
+.NavNameIco,
+h3 {
+    margin: 0 .5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 89, 255);
+    width: 35px;
+    height: 35px;
+    border-radius: 5pc;
+    color: white;
+    font-size: 16px;
 }
 </style>

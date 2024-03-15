@@ -2,7 +2,7 @@
     <div>
         <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#SignIn"
             id="signInBtn" :class="{ 'black-text': isScrolled }">
-            login
+            login <i class="bi bi-box-arrow-in-right"></i>
         </button>
 
         <div class="modal fade" id="SignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
