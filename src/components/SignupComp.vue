@@ -7,12 +7,9 @@
         <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="signupModalLabel" :class="{ 'black-text': isScrolled }">Sign Up</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
                         <form @submit.prevent="addUser">
+                            <h4>New Here?</h4>
                             <div class="mb-3">
                                 <label for="userFirstName" class="form-label black-text">First Name:</label>
                                 <input type="text" class="form-control" id="userFirstName" v-model="user.userFirstName"
@@ -34,6 +31,10 @@
                             </div>
                             <button type="submit" class="btn btn-primary modal-button">Sign Up</button>
                         </form>
+                        <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal"
+                            data-bs-target="#SignIn" id="signInBtn" :class="{ 'black-text': isScrolled }">Already a
+                            User? Log In
+                        </button>
                     </div>
                 </div>
             </div>
@@ -98,7 +99,20 @@ export default {
     transition: color 0.3s ease;
 }
 
+h4 {
+    color: white;
+}
+
+.modal-body {
+    background-color: rgb(0, 89, 255);
+    border-radius: .4pc;
+}
+
 .black-text {
     color: black !important;
+}
+
+#signInBtn {
+    background-color: transparent;
 }
 </style>
