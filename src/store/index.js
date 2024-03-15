@@ -1,4 +1,6 @@
 import { createStore } from 'vuex';
+import Swal from 'sweetalert2';
+
 const renderLink = 'https://cyber-cecurity-1.onrender.com/';
 
 export default createStore({
@@ -8,8 +10,6 @@ export default createStore({
     cart: null,
     signedUser: '',
     isLoggedIn: false
-  },
-  getters: {
   },
   mutations: {
     setUsers(state, value) {
@@ -29,17 +29,59 @@ export default createStore({
     }
   },
   actions: {
-    // Fetch all users
     async fetchUsers(context) {
-      let res = await fetch(`${renderLink}Users`);
-      context.commit('setUsers', await res.json());
+      try {
+        let res = await fetch(`${renderLink}Users`);
+        context.commit('setUsers', await res.json());
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to fetch users. Please try again later.'
+        });
+      }
     },
-    // Fetch all items
     async fetchItems(context) {
-      let res = await fetch(`${renderLink}Items`);
-      context.commit('setItems', await res.json());
+      try {
+        let res = await fetch(`${renderLink}Items`);
+        context.commit('setItems', await res.json());
+      } catch (error) {
+        console.error('Error fetching items:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to fetch items. Please try again later.'
+        });
+      }
     },
-    // Sign the user in
+    async addProduct(context, newProduct) {
+      try {
+        const res = await fetch(`${renderLink}Items`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newProduct)
+        });
+        if (!res.ok) {
+          throw new Error('Failed to add product');
+        }
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Product has been added successfully!'
+        });
+      } catch (error) {
+        console.error('Error adding product:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to add product. Please try again later.'
+        });
+        throw error;
+      }
+    },
     async signIn({ commit }, { userEmail, userPass }) {
       try {
         let res = await fetch(`${renderLink}signIn`, {
@@ -50,16 +92,20 @@ export default createStore({
           credentials: 'include',
           body: JSON.stringify({ userEmail, userPass })
         });
-        // Create a cookie for the user with a webtoken if the cookie isn't undefined
+
         let { token, user } = await res.json();
 
         if (token !== undefined) {
           document.cookie = `webtoken=${token};`;
         } else {
-          alert('Incorrect Login Details');
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Incorrect Login Details'
+          });
           return;
         }
-        // Create a cookie for the user with values of the users id and role to be used later
+
         if (user !== undefined) {
           const userCookie = {
             userID: user.userID,
@@ -77,12 +123,16 @@ export default createStore({
         }
       } catch (error) {
         console.error('Error signing in:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error signing in. Please try again later.'
+        });
         throw error;
       }
     },
     async fetchCart(context) {
       try {
-        // Retrieve user ID from the cookie
         const cookies = document.cookie.split(';').map(cookie => cookie.trim());
         let userId;
         for (const cookie of cookies) {
@@ -104,9 +154,13 @@ export default createStore({
         context.commit('setCart', await res.json());
       } catch (error) {
         console.error('Error fetching cart:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Please Log in',
+          text: 'Error fetching cart. Please try again later.'
+        });
       }
     },
-    // Add to Cart function
     async addToCart(context, params) {
       const cookies = document.cookie.split(';').map(cookie => cookie.trim());
       let userId;
@@ -125,7 +179,7 @@ export default createStore({
 
       if (userId) {
         try {
-          const res = await fetch(`${renderLink}cart/${userId}`, {
+          await fetch(`${renderLink}cart/${userId}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -134,9 +188,19 @@ export default createStore({
           });
         } catch (error) {
           console.error('Error adding product to cart:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Error adding product to cart. Please try again later.'
+          });
         }
       } else {
         console.error('User ID not found. Unable to add product to cart.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'User ID not found. Unable to add product to cart.'
+        });
       }
     },
     async removeFromCart(context, params) {
@@ -153,16 +217,21 @@ export default createStore({
           };
 
           try {
-            const res = await fetch(`${renderLink}cart/${userId}`, {
+            await fetch(`${renderLink}cart/${userId}`, {
               method: "DELETE",
               headers: {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify(data)
             });
-            location.reload()
+            location.reload();
           } catch (error) {
-            console.error('Unable to delete item from cart');
+            console.error('Unable to delete item from cart:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Unable to delete item from cart. Please try again later.'
+            });
           }
           break;
         }
@@ -170,23 +239,23 @@ export default createStore({
     },
     async signOut({ commit }) {
       try {
-        // Delete the cookies when signed out by using a backdating method
         commit('setSignedUser', null);
         commit('setIsLoggedIn', false);
 
         document.cookie = 'webtoken=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
         document.cookie = 'user=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
 
-        // change directory when firebase deploy to home
-        location.href = 'http://localhost:8080'
+        location.href = 'http://localhost:8080'; // Change this URL if needed
       } catch (error) {
         console.error('Error signing out:', error);
-        throw error;
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error signing out. Please try again later.'
+        });
       }
     }
   },
   modules: {
   }
 });
-
-
