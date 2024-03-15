@@ -1,7 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import IntroView from '../components/SpinnerComp.vue'
 
 const routes = [
+  {
+    path: '/intro',
+    name: 'intro',
+    component: IntroView
+  },
   {
     path: '/',
     name: 'home',
@@ -48,5 +54,14 @@ const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.name !== 'intro' && !localStorage.getItem('introVisited')) { 
+    next('/intro');
+  } else {
+    localStorage.setItem('introVisited', true);
+    next();
+  }
+});
 
 export default router
