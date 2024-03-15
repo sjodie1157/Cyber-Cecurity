@@ -8,22 +8,23 @@
         <div class="modal fade" id="SignIn" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Sign In</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
+                        <h4 class="modal-title fs-5" id="exampleModalLabel">Welcome Back</h4>
                         <form @submit.prevent="signIn">
                             <div class="mb-3">
-                                <label for="email" class="col-form-label">Email:</label>
+                                <label for="email" class="form-label text-white ms-auto">Email:</label>
                                 <input v-model="userEmail" type="email" class="form-control" id="email" required />
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="col-form-label">Password:</label>
+                                <label for="password" class="form-label text-white">Password:</label>
                                 <input v-model="userPass" type="password" class="form-control" id="password" required />
                             </div>
                             <button type="submit" class="btn btn-primary modal-button">Sign In</button>
                         </form>
+                        <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal"
+                            data-bs-target="#signupModal" id="modalBtn">
+                            Not registered? Sign up.
+                        </button>
                     </div>
                 </div>
             </div>
@@ -84,5 +85,26 @@ export default {
 
 .black-text {
     color: black !important;
+}
+
+h4 {
+    color: white;
+}
+
+.modal-body {
+    background-color: rgba(0, 89, 255, 0.829);
+    border-radius: .4pc;
+}
+
+input {
+    background-color: transparent;
+    color: white;
+    cursor: none;
+}
+
+input:focus {
+    outline: none;
+    background-color: rgb(0, 89, 255);
+    cursor: none;
 }
 </style>
