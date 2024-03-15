@@ -28,7 +28,7 @@ const routes = [
     component: () => import('../views/StockBookingView.vue')
   },
   {
-    path: '/admin',
+    path: '/5465351321asdad48w6521a5sd',
     name: 'admin',
     component: () => import('../views/AdminView.vue')
   },
