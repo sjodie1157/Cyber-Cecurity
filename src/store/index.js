@@ -99,6 +99,28 @@ export default createStore({
         throw error;
       }
     },
+    async addItem(context, newItemData) {
+      try {
+        const response = await fetch(`${renderLink}items`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newItemData)
+        });
+
+        if (response.ok) {
+          await context.dispatch('fetchItems');
+          alert('Item has been added');
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to add item');
+        }
+      } catch (error) {
+        console.error('Error adding item', error);
+        alert('Failed to add item');
+      }
+    },
     async fetchCart(context) {
       try {
         // Retrieve user ID from the cookie

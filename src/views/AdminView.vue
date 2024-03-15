@@ -1,5 +1,6 @@
 <template>
     <div class="container-fluid">
+        <!-- Users Table -->
         <h1>Users</h1>
         <div class="table-responsive">
             <table class="table table-striped">
@@ -30,7 +31,13 @@
             </table>
         </div>
 
+        <!-- Items Table -->
         <h1>Items</h1>
+        <!-- Add Item Form -->
+        <div class="mb-3">
+            <AddItemComp @addItem="addItem" />
+        </div>
+        <!-- Items table content -->
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -65,10 +72,11 @@
 
 <script>
 import EditItem from "../components/UpdateItem.vue";
-
+import AddItemComp from "@/components/AddItemComp.vue";
 export default {
     components: {
-        EditItem
+        EditItem,
+        AddItemComp
     },
     data() {
         return {};
@@ -106,7 +114,7 @@ export default {
                 await fetch(`https://cyber-cecurity-1.onrender.com/items/${prodID}`, {
                     method: 'DELETE',
                 });
-                this.$store.dispatch('fetchUsers');
+                this.$store.dispatch('fetchItems');
                 alert('Item has been removed');
                 location.reload()
             } catch (error) {
@@ -126,14 +134,12 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
     padding: 2em 0 0 0;
 }
-            
+
 .container-fluid {
     min-height: 100vh;
     background-color: gray;
 }
-
 </style>

@@ -43,7 +43,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     @click="closeModal">Close</button>
-                                <button type="submit" class="btn btn-primary">Add Product</button>
+                                <button type="submit" class="btn btn-primary" @click="addItem">Add Product</button>
                             </div>
                         </form>
                     </div>
@@ -68,11 +68,11 @@ export default {
         };
     },
     methods: {
-        async addProduct() {
+        async addItem() {
             try {
                 const timestamp = Date.now();
                 this.newProduct.prodID = timestamp;
-                await this.$store.dispatch('addProduct', this.newProduct);
+                await this.$store.dispatch('addItem', this.newProduct);
                 this.clearInputFields();
                 this.closeModal();
             } catch (error) {
@@ -86,8 +86,8 @@ export default {
         },
         closeModal() {
             setTimeout(() => {
-                location.reload();
-            }, 300);
+                // location.reload();
+            }, 1000);
         }
     }
 }
