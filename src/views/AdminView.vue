@@ -1,4 +1,4 @@
-admin view<template>
+<template>
     <div class="container-fluid">
         <h1>Users</h1>
         <div class="table-responsive">
@@ -31,7 +31,6 @@ admin view<template>
         </div>
 
         <h1>Items</h1>
-        <AddItemComp />
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -54,6 +53,9 @@ admin view<template>
                         <td>{{ item.prodCategory }}</td>
                         <td>{{ item.prodQuantity }}</td>
                         <td><button class="btn btn-danger" @click="deleteItem(item.prodID)">Delete</button></td>
+                        <td>
+                            <EditItem :item="item" @editItem="editItem" />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -62,11 +64,11 @@ admin view<template>
 </template>
 
 <script>
-import AddItemComp from '@/components/AddItemComp.vue';
+import EditItem from "../components/UpdateItem.vue";
 
 export default {
     components: {
-        AddItemComp
+        EditItem
     },
     data() {
         return {};
@@ -89,6 +91,14 @@ export default {
                 alert('User has been removed');
             } catch (error) {
                 console.error('Error deleting user', error);
+            }
+        },
+        async editItem(updatedItem) {
+            try {
+                await this.$store.dispatch('editItems', { prodID: updatedItem.prodID, newInfo: updatedItem });
+                alert('Item has been updated');
+            } catch (error) {
+                console.error('Error editing item', error);
             }
         },
         async deleteItem(prodID) {
@@ -116,12 +126,14 @@ export default {
 </script>
 
 <style scoped>
+
 h1 {
     padding: 2em 0 0 0;
 }
-
+            
 .container-fluid {
     min-height: 100vh;
     background-color: gray;
 }
+
 </style>
