@@ -21,23 +21,24 @@
                             </div>
                             <div class="mb-3">
                                 <label for="quantity" class="col-form-label">Quantity:</label>
-                                <input type="text" class="form-control" id="quantity" v-model="newProduct.quantity">
+                                <input type="text" class="form-control" id="quantity" v-model="newProduct.prodQuantity">
                             </div>
                             <div class="mb-3">
                                 <label for="price" class="col-form-label">Price:</label>
-                                <input type="number" class="form-control" id="price" v-model="newProduct.price">
+                                <input type="number" class="form-control" id="price" v-model="newProduct.prodPrice">
                             </div>
                             <div class="mb-3">
                                 <label for="category" class="col-form-label">Category:</label>
-                                <input type="text" class="form-control" id="category" v-model="newProduct.category">
+                                <input type="text" class="form-control" id="category" v-model="newProduct.prodCategory">
                             </div>
                             <div class="mb-3">
                                 <label for="prodDesc" class="col-form-label">Product Description:</label>
-                                <textarea class="form-control" id="prodDesc" v-model="newProduct.prodDesc"></textarea>
+                                <textarea class="form-control" id="prodDesc"
+                                    v-model="newProduct.prodDescription"></textarea>
                             </div>
                             <div class="mb-3">
                                 <label for="imgUrl" class="col-form-label">Image URL:</label>
-                                <input type="text" class="form-control" id="imgUrl" v-model="newProduct.imgUrl">
+                                <input type="text" class="form-control" id="imgUrl" v-model="newProduct.prodImg">
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
@@ -57,33 +58,31 @@ export default {
     data() {
         return {
             newProduct: {
-                prodName: null,
-                quantity: null,
-                price: null,
-                category: null,
-                prodDesc: null,
-                imgUrl: null
+                prodName: '',
+                prodQuantity: '',
+                prodPrice: '',
+                prodCategory: '',
+                prodDescription: '',
+                prodImg: ''
             }
         };
     },
     methods: {
-        addProduct() {
+        async addProduct() {
             try {
                 const timestamp = Date.now();
                 this.newProduct.prodID = timestamp;
-                this.$store.dispatch('addProduct', this.newProduct);
+                await this.$store.dispatch('addProduct', this.newProduct);
                 this.clearInputFields();
-                alert("Product has been added successfully!");
                 this.closeModal();
             } catch (error) {
                 console.error("Error adding product:", error);
-                alert("Failed to add product. Please try again.");
             }
         },
         clearInputFields() {
-            Object.keys(this.newProduct).forEach(key => {
-                this.newProduct[key] = null;
-            });
+            for (const key in this.newProduct) {
+                this.newProduct[key] = '';
+            }
         },
         closeModal() {
             setTimeout(() => {

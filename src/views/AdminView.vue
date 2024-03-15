@@ -1,4 +1,4 @@
-<template>
+admin view<template>
     <div class="container-fluid">
         <h1>Users</h1>
         <div class="table-responsive">
@@ -31,6 +31,7 @@
         </div>
 
         <h1>Items</h1>
+        <AddItemComp />
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -61,7 +62,12 @@
 </template>
 
 <script>
+import AddItemComp from '@/components/AddItemComp.vue';
+
 export default {
+    components: {
+        AddItemComp
+    },
     data() {
         return {};
     },
@@ -110,14 +116,12 @@ export default {
 </script>
 
 <style scoped>
-
 h1 {
     padding: 2em 0 0 0;
 }
-            
+
 .container-fluid {
     min-height: 100vh;
     background-color: gray;
 }
-
 </style>
