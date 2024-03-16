@@ -1,4 +1,10 @@
 <template>
+    <h1>
+        Cart Page
+    </h1>
+    <h4>
+        Still need to finish design
+    </h4>
     <div v-if="cart">
         <div v-for="item in cart" :key="item.prodID">
             {{ item.prodName }}
