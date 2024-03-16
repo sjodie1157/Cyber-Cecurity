@@ -1,14 +1,14 @@
 <template>
     <div>
-        <button type="button" class="btn my-2" data-bs-toggle="modal" :data-bs-target="'#editusermodal' + 108">
+        <button type="button" class="btn my-2" data-bs-toggle="modal" :data-bs-target="'#editusermodal'">
             Edit
         </button>
-        <div class="modal fade" :id="'editusermodal' + 108" data-bs-backdrop="static" data-bs-keyboard="false"
+        <div class="modal fade" :id="'editusermodal'" data-bs-backdrop="static" data-bs-keyboard="false"
             tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel">Edit User</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -18,6 +18,7 @@
                                 <!-- <input type="text" class="form-control" id="username" v-model="user.userFirstName"> -->
                             </div>
                             <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="button" class="btn btn-danger" @click="deleteUser">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -29,7 +30,7 @@
 <script>
 export default {
     props: {
-        user: Object 
+        user: Object
     },
     methods: {
         async editUser() {
@@ -55,7 +56,39 @@ export default {
             setTimeout(() => {
                 location.reload();
             }, 300);
-        }
+        },
+        async deleteUser() {
+            try {
+                const userData = this.$cookies.get("user");
+                if (userData && userData.userID) {
+                    const userID = userData.userID;
+                    const response = await fetch(`https://cyber-cecurity-1.onrender.com/users/${userID}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+                        
+                        this.$cookies.remove("user");
+                        this.$cookies.remove("webtoken");
+
+                        location.href = 'http://localhost:8080';
+
+                        alert('User has been deleted');
+                    } else {
+                        console.error('Error deleting user:', response.statusText);
+                    }
+                } else {
+                    console.error('Error: User data or userID not found in cookie.');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+            }
+        },
+        deleteCookies() {
+            this.$cookies.remove('webtoken');
+            this.$cookies.remove('user');
+        },
+
     }
 };
 </script>
