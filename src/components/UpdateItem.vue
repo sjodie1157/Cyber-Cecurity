@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     props: {
         item: Object
@@ -74,9 +76,11 @@ export default {
         async submitEdit() {
             try {
                 await this.$store.dispatch('editItems', { prodID: this.item.prodID, newInfo: this.editInfo });
-                location.reload()
+                Swal.fire('Success', 'Item has been updated', 'success');
+                location.reload();
             } catch (error) {
                 console.error('Error editing item:', error);
+                Swal.fire('Error', 'Failed to update item', 'error');
             }
         }
     }

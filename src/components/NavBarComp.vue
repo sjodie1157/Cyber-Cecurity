@@ -65,7 +65,8 @@
                                     Inventory</router-link>
                             </li>
                             <li class="nav-item" v-if="isAdmin">
-                                <router-link class="nav-link" to="/5465351321asdad48w6521a5sd"><i class="bi bi-database-fill-gear"></i>
+                                <router-link class="nav-link" to="/5465351321asdad48w6521a5sd"><i
+                                        class="bi bi-database-fill-gear"></i>
                                     Admin</router-link>
                             </li>
                             <li class="nav-item"
@@ -92,6 +93,7 @@
 import LogInModal from './LogInModal.vue';
 import SignupComp from './SignupComp.vue';
 import UpdateUser from './UserUpdate.vue';
+import Swal from 'sweetalert2';
 
 export default {
     components: {
@@ -133,7 +135,11 @@ export default {
             try {
                 await this.$store.dispatch('signOut');
             } catch (error) {
-                alert('Error signing out:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Error signing out. Please try again.',
+                });
             }
         },
         deleteCookies() {
@@ -146,6 +152,7 @@ export default {
     }
 }
 </script>
+
 <style scoped>
 .bg-white {
     background-color: rgba(255, 255, 255, 0.59) !important;

@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {};
@@ -24,8 +26,14 @@ export default {
         }
     },
     methods: {
-        addToCart(prodID) {
-            this.$store.dispatch('addToCart', prodID);
+        async addToCart(prodID) {
+            try {
+                await this.$store.dispatch('addToCart', prodID);
+                Swal.fire('Success', 'Item has been added to cart', 'success');
+            } catch (error) {
+                console.error('Error adding item to cart', error);
+                Swal.fire('Error', 'Failed to add item to cart', 'error');
+            }
         }
     },
     async mounted() {

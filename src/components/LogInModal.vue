@@ -33,6 +33,7 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
 
 export default {
     data() {
@@ -46,7 +47,12 @@ export default {
         async signIn() {
             try {
                 if (this.userEmail.trim() === "" || this.userPass.trim() === "") {
-                    alert("Email and password cannot be blank");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Oops...',
+                        text: 'Email and password cannot be blank',
+                    });
+                    return;
                 }
                 await this.$store.dispatch("signIn", {
                     userEmail: this.userEmail,
@@ -55,9 +61,17 @@ export default {
             } catch (error) {
                 console.error("Error signing in:", error);
                 if (error.response && error.response.status === 404) {
-                    alert("User not found. Please check your credentials and try again.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'User not found. Please check your credentials and try again.',
+                    });
                 } else {
-                    alert("Error signing in. Please try again.");
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Error signing in. Please try again.',
+                    });
                 }
             }
         },
