@@ -1,15 +1,14 @@
 <template>
     <div>
         <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal" data-bs-target="#signupModal"
-            id="modalBtn" :class="{ 'black-text': isScrolled }">
-            Sign Up <i class="bi bi-person-plus-fill"></i>
+            id="modalBtn">Add User
         </button>
         <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-body">
                         <form @submit.prevent="addUser">
-                            <h4>New Here?</h4>
+                            <h4>Add User</h4>
                             <div class="mb-3">
                                 <label for="userFirstName" class="form-label black-text">First Name:</label>
                                 <input type="text" class="form-control" id="userFirstName" v-model="user.userFirstName"
@@ -25,16 +24,12 @@
                                 <input type="email" class="form-control" id="email" v-model="user.userEmail" required>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label black-text">Password:</label>
+                                <label for="password" class="form-label black-text">Create a Password:</label>
                                 <input type="password" class="form-control" id="password" v-model="user.userPass"
                                     required>
                             </div>
-                            <button type="submit" class="btn btn-primary modal-button">Sign Up</button>
+                            <button type="submit" class="btn btn-primary modal-button">Submit</button>
                         </form>
-                        <button type="button" class="btn btn-primary modal-button" data-bs-toggle="modal"
-                            data-bs-target="#SignIn" id="signInBtn" :class="{ 'black-text': isScrolled }">Already a
-                            User? Log In
-                        </button>
                     </div>
                 </div>
             </div>
@@ -63,22 +58,12 @@ export default {
                 this.user.userLastName = '';
                 this.user.userEmail = '';
                 this.user.userPass = '';
-
-                alert('User has been added');
+                location.reload()
             } catch (error) {
                 console.error("Error adding user: " + error);
                 alert('Failed to add user');
             }
-        },
-        handleScroll() {
-            this.isScrolled = window.scrollY > 0;
-        },
-    },
-    mounted() {
-        window.addEventListener('scroll', this.handleScroll);
-    },
-    beforeDestroy() {
-        window.removeEventListener('scroll', this.handleScroll);
+        }
     }
 };
 </script>
