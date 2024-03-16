@@ -2,6 +2,7 @@
     <div class="container-fluid">
         <!-- Users Table -->
         <h1>Users</h1>
+        <AddUserComp />
         <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
@@ -26,6 +27,9 @@
                         <td>{{ user.userAge }}</td>
                         <td>{{ user.userRole }}</td>
                         <td><button class="btn btn-danger" @click="deleteUser(user.userID)">Delete</button></td>
+                        <td>
+                            <EditUser :user="user" @editUser="editUser" />
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -72,11 +76,15 @@
 
 <script>
 import EditItem from "../components/UpdateItem.vue";
+import EditUser from "../components/UserUpdate";
 import AddItemComp from "@/components/AddItemComp.vue";
+import AddUserComp from "@/components/AddUserComp.vue";
 export default {
     components: {
         EditItem,
-        AddItemComp
+        AddItemComp,
+        AddUserComp,
+        EditUser
     },
     data() {
         return {};
@@ -107,6 +115,14 @@ export default {
                 alert('Item has been updated');
             } catch (error) {
                 console.error('Error editing item', error);
+            }
+        },
+        async editUser(updatedUser) {
+            try {
+                await this.$store.dispatch('editUser', { userID: updatedUser.userID, newInfo: updatedUser });
+                alert('User has been updated');
+            } catch (error) {
+                console.error('Error editing user', error);
             }
         },
         async deleteItem(prodID) {

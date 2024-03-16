@@ -74,7 +74,6 @@ export default {
         async submitEdit() {
             try {
                 await this.$store.dispatch('editItems', { prodID: this.item.prodID, newInfo: this.editInfo });
-                alert('Item has been updated');
                 location.reload()
             } catch (error) {
                 console.error('Error editing item:', error);

@@ -147,6 +147,43 @@ export default createStore({
         console.error('Error fetching cart:', error);
       }
     },
+    // Add a user
+    async addUser(context, userData) {
+      try {
+        const response = await fetch(`${renderLink}Users`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(userData)
+        });
+
+        if (response.ok) {
+          alert('User has been added successfully');
+        } else {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to add user');
+        }
+      } catch (error) {
+        console.error('Error adding user', error);
+        alert('Failed to add user');
+      }
+    },
+    // Edit User
+    async editUser(context, { newInfo, userID }) {
+      try {
+        await fetch(`https://cyber-cecurity-1.onrender.com/users/${this.user.userID}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(this.user)
+        });
+      } catch (error) {
+        console.error('Error editing user:', error);
+        throw new Error('Failed to edit user');
+      }
+    },
     // Add to Cart function
     async addToCart(context, params) {
       const cookies = document.cookie.split(';').map(cookie => cookie.trim());

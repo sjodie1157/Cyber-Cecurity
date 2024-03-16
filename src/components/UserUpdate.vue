@@ -1,31 +1,24 @@
 <template>
     <div>
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userUpdateModal"
-            id="modalUpdateUser" data-bs-whatever="@mdo"><i class="bi bi-person-gear"></i> User Settings</button>
-
-        <div class="modal fade" id="userUpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
+        <button type="button" class="btn my-2" data-bs-toggle="modal" :data-bs-target="'#editusermodal' + 108">
+            Edit
+        </button>
+        <div class="modal fade" :id="'editusermodal' + 108" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">New message</h1>
+                        <h5 class="modal-title" id="staticBackdropLabel">Edit User</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
+                        <form @submit.prevent="editUser">
                             <div class="mb-3">
-                                <label for="recipient-name" class="col-form-label">Recipient:</label>
-                                <input type="text" class="form-control" id="recipient-name">
+                                <label for="username" class="form-label">New Username:</label>
+                                <!-- <input type="text" class="form-control" id="username" v-model="user.userFirstName"> -->
                             </div>
-                            <div class="mb-3">
-                                <label for="message-text" class="col-form-label">Message:</label>
-                                <textarea class="form-control" id="message-text"></textarea>
-                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Disgard changes</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -35,15 +28,34 @@
 
 <script>
 export default {
-
-}
+    props: {
+        user: Object 
+    },
+    methods: {
+        async editUser() {
+            try {
+                const response = await fetch(`https://cyber-cecurity-1.onrender.com/users/${this.user.userID}`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userFirstName: this.user.userFirstName })
+                });
+                if (response.ok) {
+                    this.refresh();
+                    alert('User has been updated');
+                } else {
+                    console.error('Error editing user:', response.statusText);
+                }
+            } catch (error) {
+                console.error('Error editing user:', error);
+            }
+        },
+        refresh() {
+            setTimeout(() => {
+                location.reload();
+            }, 300);
+        }
+    }
+};
 </script>
-
-<style scoped>
-#modalUpdateUser {
-    margin: 1em;
-    background-color: transparent;
-    color: rgb(0, 89, 255);
-    border-color: rgb(0, 89, 255);
-}
-</style>
