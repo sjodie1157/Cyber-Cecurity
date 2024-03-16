@@ -1,4 +1,6 @@
 import { createStore } from 'vuex';
+import Swal from 'sweetalert2';
+
 const renderLink = 'https://cyber-cecurity-1.onrender.com/';
 
 export default createStore({
@@ -30,16 +32,40 @@ export default createStore({
   },
   actions: {
     // Fetch all users
-    async fetchUsers(context) {
-      let res = await fetch(`${renderLink}Users`);
-      context.commit('setUsers', await res.json());
+    async fetchUsers({ commit }) {
+      try {
+        let res = await fetch(`${renderLink}Users`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        commit('setUsers', await res.json());
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to fetch users',
+        });
+      }
     },
     // Fetch all items
-    async fetchItems(context) {
-      let res = await fetch(`${renderLink}Items`);
-      context.commit('setItems', await res.json());
+    async fetchItems({ commit }) {
+      try {
+        let res = await fetch(`${renderLink}Items`);
+        if (!res.ok) {
+          throw new Error('Failed to fetch items');
+        }
+        commit('setItems', await res.json());
+      } catch (error) {
+        console.error('Error fetching items:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to fetch items',
+        });
+      }
     },
-    async editItems(context, { prodID, newInfo }) {
+    async editItems({ commit }, { prodID, newInfo }) {
       try {
         const res = await fetch(`${renderLink}items/${prodID}`, {
           method: 'PATCH',
@@ -52,8 +78,18 @@ export default createStore({
           throw new Error('Failed to edit item');
         }
         // Optionally, you can commit mutations or handle response as required
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Item has been updated',
+        });
       } catch (error) {
         console.error('Error editing item:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to edit item',
+        });
         throw error;
       }
     },
@@ -111,14 +147,22 @@ export default createStore({
 
         if (response.ok) {
           await context.dispatch('fetchItems');
-          alert('Item has been added');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Item has been added',
+          });
         } else {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to add item');
         }
       } catch (error) {
         console.error('Error adding item', error);
-        alert('Failed to add item');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to add item',
+        });
       }
     },
     async fetchCart(context) {
@@ -145,6 +189,11 @@ export default createStore({
         context.commit('setCart', await res.json());
       } catch (error) {
         console.error('Error fetching cart:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to fetch cart',
+        });
       }
     },
     // Add a user
@@ -159,14 +208,22 @@ export default createStore({
         });
 
         if (response.ok) {
-          alert('User has been added successfully');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'User has been added successfully',
+          });
         } else {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Failed to add user');
         }
       } catch (error) {
         console.error('Error adding user', error);
-        alert('Failed to add user');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to add user',
+        });
       }
     },
     // Edit User
@@ -179,8 +236,18 @@ export default createStore({
           },
           body: JSON.stringify(this.user)
         });
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'User information has been updated',
+        });
       } catch (error) {
         console.error('Error editing user:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to edit user',
+        });
         throw new Error('Failed to edit user');
       }
     },
@@ -210,11 +277,26 @@ export default createStore({
             },
             body: JSON.stringify(data)
           });
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Item has been added to cart',
+          });
         } catch (error) {
           console.error('Error adding product to cart:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Failed to add item to cart',
+          });
         }
       } else {
         console.error('User ID not found. Unable to add product to cart.');
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'User ID not found. Unable to add product to cart.',
+        });
       }
     },
     async removeFromCart(context, params) {
@@ -238,9 +320,19 @@ export default createStore({
               },
               body: JSON.stringify(data)
             });
-            location.reload()
+            location.reload();
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Item has been removed from cart',
+            });
           } catch (error) {
-            console.error('Unable to delete item from cart');
+            console.error('Unable to delete item from cart:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Unable to delete item from cart',
+            });
           }
           break;
         }
@@ -256,9 +348,14 @@ export default createStore({
         document.cookie = 'user=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
 
         // change directory when firebase deploy to home
-        location.href = 'http://localhost:8080'
+        location.href = 'http://localhost:8080';
       } catch (error) {
         console.error('Error signing out:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Error signing out',
+        });
         throw error;
       }
     }
@@ -266,5 +363,3 @@ export default createStore({
   modules: {
   }
 });
-
-

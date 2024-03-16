@@ -38,6 +38,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {
@@ -46,22 +48,31 @@ export default {
                 userLastName: '',
                 userEmail: '',
                 userPass: ''
-            },
-            isScrolled: false
+            }
         };
     },
     methods: {
         async addUser() {
             try {
                 await this.$store.dispatch('addUser', this.user);
-                this.user.userFirstName = '';
-                this.user.userLastName = '';
-                this.user.userEmail = '';
-                this.user.userPass = '';
-                location.reload()
+                this.clearInputFields();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'User has been added',
+                });
             } catch (error) {
                 console.error("Error adding user: " + error);
-                alert('Failed to add user');
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to add user',
+                });
+            }
+        },
+        clearInputFields() {
+            for (const key in this.user) {
+                this.user[key] = '';
             }
         }
     }

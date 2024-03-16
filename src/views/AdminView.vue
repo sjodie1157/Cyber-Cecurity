@@ -79,6 +79,8 @@ import EditItem from "../components/UpdateItem.vue";
 import EditUser from "../components/UserUpdate";
 import AddItemComp from "@/components/AddItemComp.vue";
 import AddUserComp from "@/components/AddUserComp.vue";
+import Swal from 'sweetalert2';
+
 export default {
     components: {
         EditItem,
@@ -104,25 +106,28 @@ export default {
                     method: 'DELETE',
                 });
                 this.$store.dispatch('fetchUsers');
-                alert('User has been removed');
+                Swal.fire('Success', 'User has been removed', 'success');
             } catch (error) {
                 console.error('Error deleting user', error);
+                Swal.fire('Error', 'Failed to delete user', 'error');
             }
         },
         async editItem(updatedItem) {
             try {
                 await this.$store.dispatch('editItems', { prodID: updatedItem.prodID, newInfo: updatedItem });
-                alert('Item has been updated');
+                Swal.fire('Success', 'Item has been updated', 'success');
             } catch (error) {
                 console.error('Error editing item', error);
+                Swal.fire('Error', 'Failed to update item', 'error');
             }
         },
         async editUser(updatedUser) {
             try {
                 await this.$store.dispatch('editUser', { userID: updatedUser.userID, newInfo: updatedUser });
-                alert('User has been updated');
+                Swal.fire('Success', 'User has been updated', 'success');
             } catch (error) {
                 console.error('Error editing user', error);
+                Swal.fire('Error', 'Failed to update user', 'error');
             }
         },
         async deleteItem(prodID) {
@@ -131,10 +136,11 @@ export default {
                     method: 'DELETE',
                 });
                 this.$store.dispatch('fetchItems');
-                alert('Item has been removed');
+                Swal.fire('Success', 'Item has been removed', 'success');
                 location.reload()
             } catch (error) {
                 console.error('Error deleting item', error);
+                Swal.fire('Error', 'Failed to delete item', 'error');
             }
         }
     },

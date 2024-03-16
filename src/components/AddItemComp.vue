@@ -43,7 +43,7 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                                     @click="closeModal">Close</button>
-                                <button type="submit" class="btn btn-primary" @click="addItem">Add Product</button>
+                                <button type="submit" class="btn btn-primary">Add Product</button>
                             </div>
                         </form>
                     </div>
@@ -54,6 +54,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {
@@ -68,15 +70,25 @@ export default {
         };
     },
     methods: {
-        async addItem() {
+        async addProduct() {
             try {
                 const timestamp = Date.now();
                 this.newProduct.prodID = timestamp;
                 await this.$store.dispatch('addItem', this.newProduct);
                 this.clearInputFields();
                 this.closeModal();
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: 'Item has been added',
+                });
             } catch (error) {
                 console.error("Error adding product:", error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to add item',
+                });
             }
         },
         clearInputFields() {
@@ -93,6 +105,4 @@ export default {
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -43,6 +43,8 @@
 </template>
 
 <script>
+import Swal from 'sweetalert2';
+
 export default {
     data() {
         return {
@@ -63,11 +65,11 @@ export default {
                 this.user.userLastName = '';
                 this.user.userEmail = '';
                 this.user.userPass = '';
-
-                alert('User has been added');
+                Swal.fire('Success', 'User has been added', 'success');
+                location.reload();
             } catch (error) {
                 console.error("Error adding user: " + error);
-                alert('Failed to add user');
+                Swal.fire('Error', 'Failed to add user', 'error');
             }
         },
         handleScroll() {

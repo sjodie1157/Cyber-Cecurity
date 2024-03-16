@@ -10,10 +10,11 @@
 </template>
 
 <script>
-    export default {
+import Swal from 'sweetalert2';
+
+export default {
     data() {
-        return {
-        };
+        return {};
     },
     computed: {
         cart() {
@@ -21,8 +22,14 @@
         }
     },
     methods: {
-        removeFromCart(prodID) {
-            this.$store.dispatch('removeFromCart', prodID);
+        async removeFromCart(prodID) {
+            try {
+                await this.$store.dispatch('removeFromCart', prodID);
+                Swal.fire('Success', 'Item has been removed from cart', 'success');
+            } catch (error) {
+                console.error('Error removing item from cart', error);
+                Swal.fire('Error', 'Failed to remove item from cart', 'error');
+            }
         }
     },
     async mounted() {
@@ -32,9 +39,7 @@
             console.error('Error fetching cart data', error);
         }
     }
-    }
+}
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
