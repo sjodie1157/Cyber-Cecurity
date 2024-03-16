@@ -28,7 +28,7 @@
                         <td>{{ user.userRole }}</td>
                         <td><button class="btn btn-danger" @click="deleteUser(user.userID)">Delete</button></td>
                         <td>
-                            <EditUser :user="user" @editUser="editUser" />
+                            <UserEditAdmin :user="user" @editUser="editUser" />
                         </td>
                     </tr>
                 </tbody>
@@ -76,7 +76,7 @@
 
 <script>
 import EditItem from "../components/UpdateItem.vue";
-import EditUser from "../components/UserUpdate";
+import UserEditAdmin from "../components/AdminUserUpdateComp.vue";
 import AddItemComp from "@/components/AddItemComp.vue";
 import AddUserComp from "@/components/AddUserComp.vue";
 import Swal from 'sweetalert2';
@@ -86,7 +86,7 @@ export default {
         EditItem,
         AddItemComp,
         AddUserComp,
-        EditUser
+        UserEditAdmin
     },
     data() {
         return {};

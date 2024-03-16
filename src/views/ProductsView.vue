@@ -1,6 +1,8 @@
 <template>
     <div>
-        <h2>Product Page</h2>
+        <h1>Product Page</h1>
+
+        <h4>This Still needs design</h4>
 
         <div v-if="items">
             <div v-for="item in items" :key="item.prodID">

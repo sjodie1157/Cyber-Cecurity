@@ -227,14 +227,14 @@ export default createStore({
       }
     },
     // Edit User
-    async editUser(context, { newInfo, userID }) {
+    async editUser(context, { userID, newInfo }) {
       try {
-        await fetch(`https://cyber-cecurity-1.onrender.com/users/${this.user.userID}`, {
+        await fetch(`https://cyber-cecurity-1.onrender.com/users/${userID}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(this.user)
+          body: JSON.stringify(newInfo)
         });
         Swal.fire({
           icon: 'success',
