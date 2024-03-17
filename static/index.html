@@ -20,7 +20,7 @@
 
 <body>
     <h3 class="textCenter">These are the paths for manipulating the database</h3>
-    <h6 class="textCenter">Static Page</h6>
+    <h3 class="textCenter">Static Page</h3>
     <table class="table table-bordered">
         <thead class="thead-dark">
             <tr>
@@ -34,6 +34,23 @@
                 <td class="centerIt">NONE</td>
                 <td>/</td>
                 <td>Displays the static page</td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 class="textCenter">Log in Path</h3>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>HTTP method</th>
+                <th>Path</th>
+                <th>Function of the path</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="centerIt">post</td>
+                <td>/login</td>
+                <td>Login Path</td>
             </tr>
         </tbody>
     </table>
@@ -54,22 +71,22 @@
             </tr>
             <tr>
                 <td class="centerIt">post</td>
-                <td>/users</td>
+                <td>/register</td>
                 <td>Adds a new user</td>
             </tr>
             <tr>
                 <td class="centerIt">get</td>
-                <td>/users/:id</td>
+                <td>/user/:id</td>
                 <td>Returns a single user by id</td>
             </tr>
             <tr>
                 <td class="centerIt">delete</td>
-                <td>/users/:id</td>
+                <td>/user/:id</td>
                 <td>Deletes a single user by id</td>
             </tr>
             <tr>
                 <td class="centerIt">patch</td>
-                <td>/users/:id</td>
+                <td>/user/:id</td>
                 <td>Edits a single user by id</td>
             </tr>
         </tbody>
