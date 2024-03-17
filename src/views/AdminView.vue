@@ -137,7 +137,6 @@ export default {
                 });
                 this.$store.dispatch('fetchItems');
                 Swal.fire('Success', 'Item has been removed', 'success');
-                location.reload()
             } catch (error) {
                 console.error('Error deleting item', error);
                 Swal.fire('Error', 'Failed to delete item', 'error');

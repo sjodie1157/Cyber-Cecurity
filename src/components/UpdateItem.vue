@@ -77,7 +77,6 @@ export default {
             try {
                 await this.$store.dispatch('editItems', { prodID: this.item.prodID, newInfo: this.editInfo });
                 Swal.fire('Success', 'Item has been updated', 'success');
-                location.reload();
             } catch (error) {
                 console.error('Error editing item:', error);
                 Swal.fire('Error', 'Failed to update item', 'error');
