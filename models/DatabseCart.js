@@ -29,7 +29,7 @@ const addToCart = async (userID, prodID) => {
     }
 };
 
-// Remove item from cart
+// Remove specific item from cart
 const removeFromCart = async (userID, prodID) => {
     try {
         const [existingProduct] = await pool.query(
@@ -77,7 +77,7 @@ const getCartItems = async (userID) => {
     FROM Products p
     LEFT JOIN Cart c ON p.prodID = c.prodID
     WHERE c.userID = ?
-    GROUP BY p.prodID, p.prodName, p.prodPrice, p.prodImg;`,[userID]);
+    GROUP BY p.prodID, p.prodName, p.prodPrice, p.prodImg;`, [userID]);
         return result;
     } catch (error) {
         console.error("Error getting cart items:", error);
@@ -85,7 +85,31 @@ const getCartItems = async (userID) => {
     }
 };
 
+// Update cart items quantity
+const updateCartQuantity = async (userID, prodID, quantity) => {
+    try {
+        const [result] = await pool.query(`
+                UPDATE Cart 
+                SET quantity = ? 
+                WHERE userID = ? AND prodID = ?;
+        `, [quantity, userID, prodID])
+    } catch (error) {
+        console.error("Error updating quantiy:", error);
+        throw error;
+    }
+}
 
+// Remove all cart items
+const clearCart = async (userID) => {
+    try {
+        const [result] = await pool.query(`
+        DELETE FROM Cart
+        WHERE userID = ?;
+        `, [userID])
+    } catch (error) {
+        console.error("Error updating quantiy:", error);
+        throw error;
+    }
+}
 
-
-export { addToCart, removeFromCart, getCartItems };
+export { addToCart, removeFromCart, getCartItems, updateCartQuantity, clearCart};

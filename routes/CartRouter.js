@@ -12,4 +12,9 @@ router.delete('/:id', controller.removeFromCart);
 // POST add item to cart for a specific user
 router.post('/:id', controller.addToCart);
 
+// PATCH update a specific items quantity
+router.patch('/:id', controller.updateCartQuantity)
+
+// DELETE clears cart
+router.delete('/Clear/:id', controller.clearCart)
 export default router;
