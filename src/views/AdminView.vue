@@ -102,7 +102,7 @@ export default {
     methods: {
         async deleteUser(userID) {
             try {
-                await fetch(`https://cyber-cecurity-1.onrender.com/users/${userID}`, {
+                await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
                     method: 'DELETE',
                 });
                 this.$store.dispatch('fetchUsers');
