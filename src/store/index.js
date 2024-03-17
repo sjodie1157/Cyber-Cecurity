@@ -34,7 +34,7 @@ export default createStore({
     // Fetch all users
     async fetchUsers({ commit }) {
       try {
-        let res = await fetch(`${renderLink}Users`);
+        let res = await fetch(`${renderLink}User`);
         if (!res.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -97,7 +97,7 @@ export default createStore({
     // Sign the user in
     async signIn({ commit }, { userEmail, userPass }) {
       try {
-        let res = await fetch(`${renderLink}signIn`, {
+        let res = await fetch(`${renderLink}login`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -135,6 +135,7 @@ export default createStore({
         throw error;
       }
     },
+    // Add an item
     async addItem(context, newItemData) {
       try {
         const response = await fetch(`${renderLink}items`, {
@@ -199,7 +200,7 @@ export default createStore({
     // Add a user
     async addUser(context, userData) {
       try {
-        const response = await fetch(`${renderLink}Users`, {
+        const response = await fetch(`${renderLink}User`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -229,7 +230,7 @@ export default createStore({
     // Edit User
     async editUser(context, { userID, newInfo }) {
       try {
-        await fetch(`https://cyber-cecurity-1.onrender.com/users/${userID}`, {
+        await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
