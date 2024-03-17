@@ -1,5 +1,4 @@
 import { getItems, getSingleItem, addItem, updateItem, deleteItem } from "../models/DatabaseItems.js";
-import { verifyAToken } from "../middleware/Authenticate.js";
 
 export default {
     getItems: async (req, res) => {
@@ -25,14 +24,8 @@ export default {
     },
     addItem: async (req, res) => {
         try {
-            await verifyAToken(req, res)
-            if (user.userRole !== 'Admin') {
-                return res.status(403).json({ error: 'Only admins can add items.' });
-            } else {
-                const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
-                const newItem = await addItem(prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity);
-                res.status(201).json(newItem);
-            }
+            const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
+            const newItem = await addItem(prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity);
         } catch (error) {
             console.error("Error adding item:", error);
             res.status(400).json({ error: error.message });

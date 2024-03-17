@@ -1,4 +1,4 @@
-import { getCartItems,removeFromCart,addToCart } from "../models/DatabseCart.js";
+import { getCartItems, removeFromCart, addToCart, updateCartQuantity, clearCart } from "../models/DatabseCart.js";
 
 export default {
     getCartItems: async (req, res) => {
@@ -32,6 +32,28 @@ export default {
             res.status(201).json({ message: "Item added to cart successfully", newItemId });
         } catch (error) {
             console.error("Error adding item:", error);
+            res.status(400).json({ error: error.message });
+        }
+    },
+
+    updateCartQuantity : async (req, res) => {
+        try {
+            const userID = req.params.id;
+            const { prodID, quantity } = req.body;
+            await updateCartQuantity(userID, prodID, quantity);
+            res.status(200).json({ message: "Cart quantity updated successfully" }); 
+        } catch (error) {
+            console.error("Error updating item quantity:", error);
+            res.status(400).json({ error: error.message });
+        }
+    },
+    clearCart : async (req, res) => {
+        try {
+            const userID = req.params.id;
+            await clearCart(userID);
+            res.status(200).json({ message: "Cart cleared successfully" }); 
+        } catch (error) {
+            console.error("Error updating item quantity:", error);
             res.status(400).json({ error: error.message });
         }
     }

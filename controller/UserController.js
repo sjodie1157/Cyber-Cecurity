@@ -2,7 +2,7 @@
 import { getUsers, getSingleUser, addUsers, updateUser, deleteUser, signIn, createToken } from '../models/DatabaseUsers.js'
 
 // Imported Password Encryption
-import hash from 'bcrypt'
+import bcrypt from 'bcrypt'
 
 export default {
     getUsers: async (req, res) => {
@@ -50,7 +50,10 @@ export default {
             if (userFirstName) updatedFields.userFirstName = userFirstName;
             if (userLastName) updatedFields.userLastName = userLastName;
             if (userImg) updatedFields.userImg = userImg;
-            if (userPass) updatedFields.userPass = await hash(userPass, 10);
+            if (userPass) {
+                const hashedPassword = await bcrypt.hash(userPass, 10);
+                updatedFields.userPass = hashedPassword;
+            }
             if (userGender) updatedFields.userGender = userGender;
             if (userAge) updatedFields.userAge = userAge;
             if (userRole) updatedFields.userRole = userRole;
