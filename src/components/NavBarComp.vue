@@ -17,7 +17,7 @@
                         v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
                         <div class="col-5">
                             <h5 class="d-flex justify-content-end" :class="{ 'black-text': isScrolled }">{{
-            userloggedinName }}</h5>
+                                userloggedinName }}</h5>
                         </div>
                         <div class="col-6 w-auto d-flex justify-content-end">
                             <img :src="userImage || ''" alt="loggedInUser"
@@ -40,7 +40,7 @@
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
                         <h3 class="NavNameIco" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">{{
-            userloggedinName.charAt(0) }}</h3>
+                            userloggedinName.charAt(0) }}</h3>
                         <h4 class="offcanvas-title text-center" id="offcanvasNavbarLabel"><span>Cy</span>ber
                             <span>Secu</span>rity
                         </h4>
@@ -56,7 +56,7 @@
                                 <router-link class="nav-link" to="/about"><i class="bi bi-diagram-3"></i> About
                                     Us</router-link>
                             </li>
-                            <li class="nav-item">
+                            <li class="nav-item" v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
                                 <router-link class="nav-link" to="/products"><i class="bi bi-basket3"></i>
                                     Products</router-link>
                             </li>
@@ -79,7 +79,12 @@
                             </li>
                         </ul>
                         <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
-                            <UpdateUser />
+                            <div class="col">
+                                <UpdateUser :user="user" @click="editUserLoggedIn" />
+                                <button type="button" class="btn btn-danger" @click="deleteUser">Delete Your
+                                    Account
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -93,6 +98,7 @@
 import LogInModal from './LogInModal.vue';
 import SignupComp from './SignupComp.vue';
 import UpdateUser from './UserUpdate.vue';
+
 import Swal from 'sweetalert2';
 
 export default {
@@ -148,6 +154,48 @@ export default {
         },
         handleScroll() {
             this.isScrolled = window.scrollY > 0;
+        },
+        async editUserLoggedIn(updatedUser) {
+            try {
+                await this.$store.dispatch('editUserLoggedIn', { userID: updatedUser.userID, newInfo: updatedUser });
+                Swal.fire('Success', 'User has been updated', 'success');
+            } catch (error) {
+                console.error('Error editing user', error);
+                Swal.fire('Error', 'Failed to update user', 'error');
+            }
+        },
+        async deleteUser() {
+            try {
+                const userData = this.$cookies.get("user");
+                if (userData && userData.userID) {
+                    const userID = userData.userID;
+                    const response = await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
+                        method: 'DELETE',
+                    });
+
+                    if (response.ok) {
+
+                        this.$cookies.remove("user");
+                        this.$cookies.remove("webtoken");
+
+                        // Fix link Upon Firebase Deploy
+                        setTimeout(() => {
+                            location.href = 'http://localhost:8080';
+                        }, 1000);
+
+                        Swal.fire('Success', 'User has been deleted', 'success');
+                    } else {
+                        console.error('Error deleting user:', response.statusText);
+                        Swal.fire('Error', 'Failed to delete user', 'error');
+                    }
+                } else {
+                    console.error('Error: User data or userID not found in cookie.');
+                    Swal.fire('Error', 'Failed to delete user', 'error');
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                Swal.fire('Error', 'Failed to delete user', 'error');
+            }
         }
     }
 }

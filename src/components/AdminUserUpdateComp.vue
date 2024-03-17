@@ -15,7 +15,7 @@
                         <form @submit.prevent="submitEditUser">
                             <div class="mb-3">
                                 <label for="Email" class="col-form-label">Email:</label>
-                                <input type="text" class="form-control" id="prodName" v-model="userInfo.userEmail">
+                                <input type="email" class="form-control" id="prodName" v-model="userInfo.userEmail">
                             </div>
                             <div class="mb-3">
                                 <label for="First Name" class="col-form-label">First Name:</label>
@@ -31,7 +31,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="user pass" class="col-form-label">Password:</label>
-                                <input type="text" class="form-control" id="userPass" v-model="userInfo.userPass">
+                                <input type="password" class="form-control" id="userPass" v-model="userInfo.userPass">
                             </div>
                             <div class="mb-3">
                                 <label for="gender" class="col-form-label">Gender:</label>
@@ -48,14 +48,19 @@
                             <div class="mb-3">
                                 <label class="form-check-label">User Role:</label><br>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="userRoleUser" value="user"
+                                    <input class="form-check-input" type="radio" id="userRoleUser" value="User"
                                         v-model="userInfo.userRole">
                                     <label class="form-check-label" for="userRoleUser">User</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" id="userRoleAdmin" value="admin"
+                                    <input class="form-check-input" type="radio" id="userRoleAdmin" value="Admin"
                                         v-model="userInfo.userRole">
                                     <label class="form-check-label" for="userRoleAdmin">Admin</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="userRoleWorker" value="Worker"
+                                        v-model="userInfo.userRole">
+                                    <label class="form-check-label" for="userRoleAdmin">Worker</label>
                                 </div>
                             </div>
                             <button type="submit">Submit</button>
@@ -81,7 +86,7 @@ export default {
                 userFirstName: this.user.userFirstName,
                 userLastName: this.user.userLastName,
                 userImg: this.user.userImg,
-                userPass: this.user.userPass,
+                userPass: '',
                 userGender: this.user.userGender,
                 userAge: this.user.userAge,
                 userRole: this.user.userRole
@@ -91,9 +96,14 @@ export default {
     methods: {
         async submitEditUser() {
             try {
-                await this.$store.dispatch('editUser', { userID: this.user.userID, newUserInfo: this.userInfo });
+                await this.$store.dispatch('editUser', {
+                    userID: this.user.userID,
+                    newUserInfo: this.userInfo
+                });
                 Swal.fire('Success', 'User information has been updated', 'success');
-                // location.reload();
+                setTimeout(() => {
+                    location.reload(); 
+                }, 1000);
             } catch (error) {
                 console.error('Error editing user:', error);
                 Swal.fire('Error', 'Failed to update user', 'error');

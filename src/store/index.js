@@ -74,6 +74,9 @@ export default createStore({
           },
           body: JSON.stringify(newInfo)
         });
+        setTimeout(() => {
+          location.reload()
+        }, 1000);
         if (!res.ok) {
           throw new Error('Failed to edit item');
         }
@@ -97,6 +100,15 @@ export default createStore({
     // Sign the user in
     async signIn({ commit }, { userEmail, userPass }) {
       try {
+        // Show loading spinner while the request is being processed
+        Swal.fire({
+          title: 'Logging in...',
+          allowOutsideClick: false,
+          onBeforeOpen: () => {
+            Swal.showLoading();
+          }
+        });
+
         let res = await fetch(`${renderLink}login`, {
           method: 'POST',
           headers: {
@@ -105,16 +117,27 @@ export default createStore({
           credentials: 'include',
           body: JSON.stringify({ userEmail, userPass })
         });
-        // Create a cookie for the user with a webtoken if the cookie isn't undefined
+
+        if (!res.ok) {
+          // If the response status is not okay, handle the error
+          throw new Error('Failed to login');
+        }
+
         let { token, user } = await res.json();
 
         if (token !== undefined) {
           document.cookie = `webtoken=${token};`;
         } else {
-          alert('Incorrect Login Details');
+          // Hide loading spinner and show login failed alert
+          Swal.close();
+          Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: 'Incorrect login details',
+          });
           return;
         }
-        // Create a cookie for the user with values of the users id and role to be used later
+
         if (user !== undefined) {
           const userCookie = {
             userID: user.userID,
@@ -125,16 +148,23 @@ export default createStore({
           document.cookie = `user=${JSON.stringify(userCookie)};`;
         }
 
-        if (user !== undefined) {
-          commit('setSignedUser', user);
-          commit('setIsLoggedIn', true);
-          location.reload();
-        }
+        // Hide loading spinner and update UI after successful login
+        Swal.close();
+        commit('setSignedUser', user);
+        commit('setIsLoggedIn', true);
+        location.reload();
       } catch (error) {
+        // Hide loading spinner and show error alert
+        Swal.close();
         console.error('Error signing in:', error);
-        throw error;
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to login. Please try again later.',
+        });
       }
-    },
+    }
+    ,
     // Add an item
     async addItem(context, newItemData) {
       try {
@@ -145,7 +175,9 @@ export default createStore({
           },
           body: JSON.stringify(newItemData)
         });
-
+        setTimeout(() => {
+          location.reload()
+        }, 1000);
         if (response.ok) {
           await context.dispatch('fetchItems');
           Swal.fire({
@@ -200,14 +232,16 @@ export default createStore({
     // Add a user
     async addUser(context, userData) {
       try {
-        const response = await fetch(`${renderLink}regiser`, {
+        const response = await fetch(`${renderLink}register`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(userData)
         });
-
+        setTimeout(() => {
+          location.reload()
+        }, 1000);
         if (response.ok) {
           Swal.fire({
             icon: 'success',
@@ -228,14 +262,14 @@ export default createStore({
       }
     },
     // Edit User
-    async editUser(context, { userID, newInfo }) {
+    async editUser(context, { userID, newUserInfo }) {
       try {
         await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
           method: 'PATCH',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify(newInfo)
+          body: JSON.stringify(newUserInfo)
         });
         Swal.fire({
           icon: 'success',
@@ -248,6 +282,41 @@ export default createStore({
           icon: 'error',
           title: 'Oops...',
           text: 'Failed to edit user',
+        });
+        throw new Error('Failed to edit user');
+      }
+    },
+    async editUserLoggedIn(context, { newUserInfo }) {
+      try {
+        const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+        let userId;
+        for (const cookie of cookies) {
+          const [name, value] = cookie.split('=');
+          if (name === 'user') {
+            const user = JSON.parse(decodeURIComponent(value));
+            userId = user.userID;
+            break;
+          }
+        }
+
+        await fetch(`https://cyber-cecurity-1.onrender.com/user/${userId}`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newUserInfo)
+        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'User information has been updated',
+        });
+      } catch (error) {
+        console.error('Error editing user:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to edit Your',
         });
         throw new Error('Failed to edit user');
       }

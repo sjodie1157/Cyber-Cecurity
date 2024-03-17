@@ -66,7 +66,6 @@ export default {
                 this.user.userEmail = '';
                 this.user.userPass = '';
                 Swal.fire('Success', 'User has been added', 'success');
-                location.reload();
             } catch (error) {
                 console.error("Error adding user: " + error);
                 Swal.fire('Error', 'Failed to add user', 'error');
