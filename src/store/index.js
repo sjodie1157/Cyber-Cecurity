@@ -200,7 +200,7 @@ export default createStore({
     // Add a user
     async addUser(context, userData) {
       try {
-        const response = await fetch(`${renderLink}User`, {
+        const response = await fetch(`${renderLink}regiser`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
