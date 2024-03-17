@@ -6,7 +6,8 @@ const { sign, verify } = jwt;
 function createToken(user) {
     return sign({
         userEmail: user.userEmail,
-        userPass: user.userPass
+        userPass: user.userPass,
+        userRole: user.userRole
     },
         process.env.SECRET_KEY,
         {
