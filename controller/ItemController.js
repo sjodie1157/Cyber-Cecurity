@@ -4,7 +4,6 @@ import { verifyAToken } from "../middleware/Authenticate.js";
 export default {
     getItems: async (req, res) => {
         try {
-            await verifyAToken(req, res)
             const items = await getItems()
             res.json(items)
         } catch (error) {
@@ -14,7 +13,6 @@ export default {
     },
     getSingleItem: async (req, res) => {
         try {
-            await verifyAToken(req, res)
             const item = await getSingleItem(+req.params.id);
             if (!item) {
                 return res.status(404).json({ error: "Item not found" });
@@ -28,8 +26,7 @@ export default {
     addItem: async (req, res) => {
         try {
             await verifyAToken(req, res)
-
-            if (userRole !== 'Admin') {
+            if (user.userRole !== 'Admin') {
                 return res.status(403).json({ error: 'Only admins can add items.' });
             } else {
                 const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
@@ -43,7 +40,6 @@ export default {
     },
     updateItem: async (req, res) => {
         try {
-            await verifyAToken(req, res)
             const existingItem = await getSingleItem(+req.params.id);
             if (!existingItem) {
                 return res.status(404).json({ error: "Item not found" });
@@ -68,7 +64,6 @@ export default {
     },
     deleteItem: async (req, res) => {
         try {
-            await verifyAToken(req, res)
             const deletedItem = await deleteItem(req.params.id);
             res.json({ message: "Item deleted successfully" });
         } catch (error) {
