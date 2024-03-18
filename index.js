@@ -27,7 +27,7 @@ const app = express();
 // Replace local host link with firebase link when finished
 
 app.use(cors({
-    origin: 'http://localhost:8080',
+    origin: 'http://localhost:8081',
     credentials: true
 }));
 
