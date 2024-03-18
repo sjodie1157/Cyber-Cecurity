@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-applyToken = (token) => {
+function applyToken(token) {
     if (token) {
         axios.defaults.headers = {
             authorization: `${token}`

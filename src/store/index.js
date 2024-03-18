@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 import Swal from 'sweetalert2';
-
+import ApplyToken from '@/middleware/ApplyToken.js';
 const renderLink = 'https://cyber-cecurity-1.onrender.com/';
 
 export default createStore({
@@ -98,8 +98,7 @@ export default createStore({
     },
 
     // Sign the user in
-    async signIn({ commit }, { userEmail, userPass, token }) {
-      ApplyToken.applyToken(token);
+    async signIn({ commit }, { userEmail, userPass }) {
       try {
         // Show loading spinner while the request is being processed
         Swal.fire({
@@ -127,6 +126,11 @@ export default createStore({
         let { token, user } = await res.json();
 
         if (token !== undefined) {
+          // Set the token in the appropriate place
+          ApplyToken.applyToken(token);
+          console.log(token);
+
+          // Store token in local storage or cookies as needed
           document.cookie = `webtoken=${token};`;
         } else {
           // Hide loading spinner and show login failed alert
@@ -140,6 +144,7 @@ export default createStore({
         }
 
         if (user !== undefined) {
+          // Store user details in local storage or cookies as needed
           const userCookie = {
             userID: user.userID,
             userFirstName: user.userFirstName,
@@ -165,6 +170,7 @@ export default createStore({
         });
       }
     }
+
     ,
     // Add an item
     async addItem(context, newItemData) {
