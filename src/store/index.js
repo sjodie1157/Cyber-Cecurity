@@ -98,7 +98,8 @@ export default createStore({
     },
 
     // Sign the user in
-    async signIn({ commit }, { userEmail, userPass }) {
+    async signIn({ commit }, { userEmail, userPass, token }) {
+      ApplyToken.applyToken(token);
       try {
         // Show loading spinner while the request is being processed
         Swal.fire({
