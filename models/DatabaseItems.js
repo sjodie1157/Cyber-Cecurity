@@ -1,6 +1,7 @@
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
 
+
 config();
 
 // Connection to databse
@@ -13,8 +14,11 @@ const pool = createPool({
     connectionLimit: 30
 });
 
+
+
 // Get all Items
 const getItems = async () => {
+
     try {
         const [result] = await pool.query(`
             SELECT prodID, prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity

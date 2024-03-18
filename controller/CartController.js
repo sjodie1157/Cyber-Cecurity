@@ -2,6 +2,7 @@ import { getCartItems, removeFromCart, addToCart, updateCartQuantity, clearCart 
 
 export default {
     getCartItems: async (req, res) => {
+
         try {
             const userID = req.params.id;
             const cartItems = await getCartItems(userID);
