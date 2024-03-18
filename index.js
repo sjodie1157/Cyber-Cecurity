@@ -1,41 +1,17 @@
-import express from 'express'
-// import config from 'dotenv'
-
-// User Router Import
+import express from 'express';
+import dotenv from 'dotenv';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import UsersRouter from './routes/UsersRouter.js';
+import ItemsRouter from './routes/ItemsRouter.js';
+import CartRouter from './routes/CartRouter.js';
+import signinRouter from './routes/SigninRouter.js';
+import UserRegisterRouter from './routes/UserRegister.js';
 
-// Item Router Import
-import ItemsRouter from './routes/ItemsRouter.js'
-
-// Cart Router Import
-import CartRouter from './routes/CartRouter.js'
-
-// Signin Router Import
-import signinRouter from './routes/SigninRouter.js'
-
-// User Register Router Import
-import UserRegisterRouter from './routes/UserRegister.js'
-
-import cors from 'cors'
-import cookieParser from 'cookie-parser'
-
+dotenv.config(); // Load environment variables
 
 const port = process.env.PORT || 4500;
 const app = express();
-
-
-// Replace local host link with firebase link when finished
-
-// Middleware - Application level
-// app.use((req, res, next) => {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Credentials", "true");
-//     res.header("Access-Control-Allow-Methods", "*");
-//     res.header("Access-Control-Request-Methods", "*");
-//     res.header("Access-Control-Allow-Headers", "*");
-//     res.header("Access-Control-Expose-Headers", "Authorization");
-//     next();
-// })
 
 app.use(cors({
     origin: 'http://localhost:8080',
@@ -46,13 +22,29 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static('./static'));
 
-app.use('/User', UsersRouter);
-app.use('/Register', UserRegisterRouter);
-app.use('/Items', ItemsRouter);
-app.use('/Cart', CartRouter);
-app.use('/login', signinRouter);
+// Middleware - Application level
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "*");
+    res.header("Access-Control-Request-Methods", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Expose-Headers", "Authorization");
+    next();
+});
 
-// local host listener
+app.use('/users', UsersRouter); // Change to '/users' if this router handles user-related routes
+app.use('/register', UserRegisterRouter); // Change to '/register' if this router handles registration
+app.use('/items', ItemsRouter); // Change to '/items' if this router handles items-related routes
+app.use('/cart', CartRouter); // Change to '/cart' if this router handles cart-related routes
+app.use('/login', signinRouter); // Change to '/login' if this router handles login-related routes
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke');
+});
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
