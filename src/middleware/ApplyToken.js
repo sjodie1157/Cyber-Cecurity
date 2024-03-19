@@ -5,6 +5,8 @@ function applyToken(token) {
         axios.defaults.headers = {
             authorization: `${token}`
         }
+    } else {
+        console.error('Something went wrong with token');
     }
 }
 

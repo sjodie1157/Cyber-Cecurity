@@ -47,6 +47,7 @@ export default {
         async signIn() {
             try {
                 if (this.userEmail.trim() === "" || this.userPass.trim() === "") {
+                    // Check if email or password is blank
                     Swal.fire({
                         icon: 'warning',
                         title: 'Oops...',
@@ -54,19 +55,24 @@ export default {
                     });
                     return;
                 }
+
+                // Dispatch the signIn action with user credentials
                 await this.$store.dispatch("signIn", {
                     userEmail: this.userEmail,
                     userPass: this.userPass
                 });
             } catch (error) {
                 console.error("Error signing in:", error);
-                if (error.response && error.response.status === 404) {
+                // Handle different error cases
+                if (error.message === 'Failed to login') {
+                    // Handle 404 error (User not found)
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
                         text: 'User not found. Please check your credentials and try again.',
                     });
                 } else {
+                    // Handle other errors
                     Swal.fire({
                         icon: 'error',
                         title: 'Oops...',
