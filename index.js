@@ -26,9 +26,23 @@ const app = express();
 
 
 app.use(cors({
-    origin: '*',
-    // credentials: true
+    origin: 'http://localhost:8080/',
+    credentials: true, // Add this line if you want to include credentials
+    exposedHeaders: 'authorization' // Add this line to expose headers
 }));
+
+// This middleware is not needed as the CORS middleware takes care of it.
+
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header("Access-Control-Allow-Methods", "*");
+    res.header("Access-Control-Request-Methods", "*");
+    res.header("Access-Control-Allow-Headers", "*");
+    res.header("Access-Control-Expose-Headers", "Authorization");
+    next();
+});
+
 
 app.use(express.json());
 app.use(cookieParser());
