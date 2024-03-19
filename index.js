@@ -26,7 +26,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: 'http://localhost:8080/',
+    origin: 'http://localhost:8080',
     credentials: true, // Add this line if you want to include credentials
     exposedHeaders: 'authorization' // Add this line to expose headers
 }));
