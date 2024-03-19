@@ -1,7 +1,6 @@
 import express from 'express';
 import controller from '../controller/UserController.js';
 import { verifyAToken } from '../middleware/Authenticate.js';
-// import { verifyAdminToken } from '../middleware/Authenticate.js';
 
 const router = express.Router();
 
