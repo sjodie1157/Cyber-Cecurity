@@ -14,7 +14,7 @@
                             @click="closeModal"></button>
                     </div>
                     <div class="modal-body">
-                        <form @submit.prevent="addProduct">
+                        <form @submit.prevent="addItem">
                             <div class="mb-3">
                                 <label for="prodName" class="col-form-label">Item Name:</label>
                                 <input type="text" class="form-control" id="prodName" v-model="newProduct.prodName">
@@ -70,18 +70,18 @@ export default {
         };
     },
     methods: {
-        async addProduct() {
+        async addItem() {
             try {
                 const timestamp = Date.now();
                 this.newProduct.prodID = timestamp;
                 await this.$store.dispatch('addItem', this.newProduct);
                 this.clearInputFields();
-                this.closeModal();
-                Swal.fire({
+                await Swal.fire({
                     icon: 'success',
                     title: 'Success',
                     text: 'Item has been added',
                 });
+                location.reload()
             } catch (error) {
                 console.error("Error adding product:", error);
                 Swal.fire({

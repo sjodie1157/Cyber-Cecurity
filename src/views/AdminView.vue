@@ -103,7 +103,8 @@ export default {
         async deleteUser(userID) {
             try {
                 await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
-                    method: 'DELETE',
+                    credentials: 'include',
+                    method: 'DELETE'
                 });
                 this.$store.dispatch('fetchUsers');
                 Swal.fire('Success', 'User has been removed', 'success');
@@ -133,6 +134,7 @@ export default {
         async deleteItem(prodID) {
             try {
                 await fetch(`https://cyber-cecurity-1.onrender.com/items/${prodID}`, {
+                    credentials: 'include',
                     method: 'DELETE',
                 });
                 this.$store.dispatch('fetchItems');
@@ -145,8 +147,8 @@ export default {
     },
     async mounted() {
         try {
-            await this.$store.dispatch('fetchUsers');
-            await this.$store.dispatch('fetchItems');
+            this.$store.dispatch('fetchUsers');
+            this.$store.dispatch('fetchItems');
         } catch (error) {
             console.error('Error fetching home data', error);
         }

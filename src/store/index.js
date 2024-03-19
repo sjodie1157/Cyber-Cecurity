@@ -34,7 +34,9 @@ export default createStore({
     // Fetch all users
     async fetchUsers({ commit }) {
       try {
-        let res = await fetch(`${renderLink}User`);
+        let res = await fetch(`${renderLink}User`, {
+          credentials: 'include',
+        });
         if (!res.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -51,11 +53,14 @@ export default createStore({
     // Fetch all items
     async fetchItems({ commit }) {
       try {
-        let res = await fetch(`${renderLink}Items`);
+        let res = await fetch(`${renderLink}Items`, {
+          credentials: 'include'
+        });
         if (!res.ok) {
           throw new Error('Failed to fetch items');
+        } else {
+          commit('setItems', await res.json());
         }
-        commit('setItems', await res.json());
       } catch (error) {
         console.error('Error fetching items:', error);
         Swal.fire({
@@ -69,6 +74,7 @@ export default createStore({
       try {
         const res = await fetch(`${renderLink}items/${prodID}`, {
           method: 'PATCH',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -170,21 +176,21 @@ export default createStore({
         });
       }
     }
-
     ,
     // Add an item
     async addItem(context, newItemData) {
       try {
         const response = await fetch(`${renderLink}items`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newItemData)
         });
-        setTimeout(() => {
-          location.reload()
-        }, 1000);
+        // setTimeout(() => {
+        //   location.reload()
+        // }, 1000);
         if (response.ok) {
           await context.dispatch('fetchItems');
           Swal.fire({
@@ -222,7 +228,9 @@ export default createStore({
         if (!userId) {
           throw new Error('User ID not found in cookie');
         }
-        let res = await fetch(`${renderLink}Cart/${userId}`);
+        let res = await fetch(`${renderLink}Cart/${userId}`, {
+          credentials: 'include',
+        });
         if (!res.ok) {
           throw new Error('Failed to fetch cart data');
         }
@@ -241,6 +249,7 @@ export default createStore({
       try {
         const response = await fetch(`${renderLink}register`, {
           method: 'POST',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -273,6 +282,7 @@ export default createStore({
       try {
         await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
           method: 'PATCH',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -308,6 +318,7 @@ export default createStore({
 
         await fetch(`https://cyber-cecurity-1.onrender.com/user/${userId}`, {
           method: 'PATCH',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json'
           },
@@ -349,6 +360,7 @@ export default createStore({
         try {
           const res = await fetch(`${renderLink}cart/${userId}`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
               'Content-Type': 'application/json'
             },
@@ -392,6 +404,7 @@ export default createStore({
           try {
             const res = await fetch(`${renderLink}cart/${userId}`, {
               method: "DELETE",
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json'
               },
