@@ -1,23 +1,9 @@
 import { getItems, getSingleItem, addItem, updateItem, deleteItem } from "../models/DatabaseItems.js";
 
-import { verifyAToken } from "../middleware/Authenticate.js";
-
-// function getUser(token) {
-//     let user = token.split('.').at(1);
-//     return JSON.parse(atob(user))
-// }
-
 export default {
     getItems: async (req, res) => {
-        verifyAToken(req, res)
-        // let token = req.headers['authorization'];
-        // console.log(token)
-
-        // let user = getUser(token);
-        // console.log('user: ', user);
         try {
             const items = await getItems()
-            console.log(res);
             res.json(items)
         } catch (error) {
             console.error('Error getting Items');
@@ -39,7 +25,7 @@ export default {
     addItem: async (req, res) => {
         try {
             const { prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity } = req.body;
-            const newItem = await addItem(prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity);
+            await addItem(prodName, prodPrice, prodDescription, prodImg, prodCategory, prodQuantity);
         } catch (error) {
             console.error("Error adding item:", error);
             res.status(400).json({ error: error.message });
