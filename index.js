@@ -32,7 +32,7 @@ app.use(cors({
 }));
 
 // This middleware is not needed as the CORS middleware takes care of it.
-// But if you want additional headers to be set, you can add them here.
+
 app.use((req, res, next) => {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
