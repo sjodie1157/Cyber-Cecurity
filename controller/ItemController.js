@@ -1,6 +1,6 @@
 import { getItems, getSingleItem, addItem, updateItem, deleteItem } from "../models/DatabaseItems.js";
 
-import { verifyAToken } from "../middleware/Authenticate.js";
+// import { verifyAToken } from "../middleware/Authenticate.js";
 
 // function getUser(token) {
 //     let user = token.split('.').at(1);
@@ -13,7 +13,7 @@ export default {
         // console.log(token)
 
         // let user = getUser(token);
-        verifyAToken(req, res)
+        // verifyAToken(req, res)
         // console.log('user: ', user);
         try {
             const items = await getItems()
