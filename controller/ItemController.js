@@ -1,6 +1,6 @@
 import { getItems, getSingleItem, addItem, updateItem, deleteItem } from "../models/DatabaseItems.js";
 
-// import { verifyAToken } from "../middleware/Authenticate.js";
+import { verifyAToken } from "../middleware/Authenticate.js";
 
 // function getUser(token) {
 //     let user = token.split('.').at(1);
@@ -9,14 +9,15 @@ import { getItems, getSingleItem, addItem, updateItem, deleteItem } from "../mod
 
 export default {
     getItems: async (req, res) => {
+        verifyAToken(req, res)
         // let token = req.headers['authorization'];
         // console.log(token)
 
         // let user = getUser(token);
-        // verifyAToken(req, res)
         // console.log('user: ', user);
         try {
             const items = await getItems()
+            console.log(res);
             res.json(items)
         } catch (error) {
             console.error('Error getting Items');
