@@ -23,7 +23,6 @@ function verifyAToken(req, res) {
     const token = req.headers['authorization'];
     if (token) {
         if (verify(token, process.env.SECRET_KEY)) {
-            // next()
         } else {
             res.json({
                 status: 401,
