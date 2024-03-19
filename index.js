@@ -32,7 +32,7 @@ const app = express();
 // }));
 
 const corsOptions = {
-    origin: '*', // Allow requests from this origin
+    origin: 'http://localhost:8080', // Allow requests from this origin
     methods: ['GET', 'POST','PATCH' , 'DELETE'],      // Allow only specified methods
     allowedHeaders: ['authorization'], // Allow only specified headers
     credentials: true              // Allow sending cookies
