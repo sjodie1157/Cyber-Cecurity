@@ -36,25 +36,6 @@ function verifyAToken(req, res) {
             msg: 'Please provide a token'
         })
     }
-    // if (!token) {
-    //     return res.status(401).json({
-    //         status: res.statusCode,
-    //         msg: 'Please Login'
-    //     });
-    // }
-
-    // try {
-    //     const decoded = verify(token, process.env.SECRET_KEY);
-    //     req.user = decoded;
-    //     next();
-    // } catch (error) {
-    //     console.error("Error verifying token:", error);
-    //     return res.status(401).json({
-    //         status: res.statusCode,
-    //         msg: 'Invalid Token'
-    //     });
-    // }
 }
-
 
 export { createToken, verifyAToken };
