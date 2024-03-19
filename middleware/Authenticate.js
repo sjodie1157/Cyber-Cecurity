@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 import 'dotenv/config'
-import { json } from 'express';
 const { sign, verify } = jwt;
 
 // Created webtoken function
@@ -38,27 +37,5 @@ function verifyAToken(req, res, next) {
     }
 }
 
-function verifyAdminToken(req, res, next) {
-    const token = req.headers.cookie.split(';')[0].split('=')[1];
-    let cookieString = req.headers.cookie;
-    let cookies = cookieString.split(';')[1].split('=')[1];
-    let admin = JSON.parse(cookies).userRole
 
-    if (token && admin) {
-        if (verify(token, process.env.SECRET_KEY)) {
-            next()
-        } else {
-            res.json({
-                status: 401,
-                msg: 'Your Not an Admin'
-            })
-        }
-    } else {
-        res.json({
-            status: 401,
-            msg: 'Your Not logged In'
-        })
-    }
-}
-
-export { createToken, verifyAToken, verifyAdminToken };
+export { createToken, verifyAToken };
