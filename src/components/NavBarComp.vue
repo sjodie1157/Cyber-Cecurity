@@ -208,7 +208,7 @@ export default {
 }
 
 span {
-    color: rgb(0, 89, 255);
+    color: rgb(0, 173, 239);
 }
 
 .black-text {
@@ -235,7 +235,7 @@ span {
     left: 0;
     width: 100%;
     height: 5px;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     visibility: hidden;
     border-radius: .3pc;
 }
@@ -247,7 +247,7 @@ span {
 
 nav a.router-link-active {
     color: white;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     border-radius: .3pc;
 }
 
@@ -282,7 +282,7 @@ h5 {
 }
 
 button:hover {
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
 }
 
 button.navbar-toggler {
@@ -307,7 +307,7 @@ h6 {
 }
 
 h6:hover {
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
 }
 
 .offcanvas {
@@ -330,7 +330,7 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     width: 35px;
     height: 35px;
     border-radius: 5pc;

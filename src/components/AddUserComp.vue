@@ -92,7 +92,7 @@ h4 {
 }
 
 .modal-body {
-    background-color: rgb(0, 89, 255);
+    background-color:rgb(0, 173, 239);
     border-radius: .4pc;
 }
 

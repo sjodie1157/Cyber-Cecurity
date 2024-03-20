@@ -70,6 +70,6 @@ h1 {
 }
 
 span {
-  color: rgb(0, 89, 255);
+  color: rgb(0, 173, 239);
 }
 </style>
