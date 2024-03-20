@@ -9,7 +9,8 @@ export default createStore({
     items: null,
     cart: null,
     signedUser: '',
-    isLoggedIn: false
+    isLoggedIn: false,
+    token: ''
   },
   getters: {
   },
@@ -28,81 +29,41 @@ export default createStore({
     },
     setIsLoggedIn(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn;
+    },
+    setToken(state, token) {
+      state.token = token;
     }
   },
   actions: {
+// User Config
     // Fetch all users
-    async fetchUsers({ commit }) {
+    async fetchUsers({ commit, state }) {
       try {
-        let res = await fetch(`${renderLink}User`, {
-          credentials: 'include',
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
+        if (!token) {
+          throw new Error('Token not found');
+        }
+
+        const res = await fetch(`${renderLink}User`, {
+          headers: {Authorization: `Bearer ${token}`},
+          credentials: 'include'
         });
+
         if (!res.ok) {
           throw new Error('Failed to fetch users');
         }
-        commit('setUsers', await res.json());
+
+        const usersData = await res.json();
+        commit('setUsers', usersData);
       } catch (error) {
         console.error('Error fetching users:', error);
         Swal.fire({
           icon: 'error',
-          title: 'Oops...',
+          title: 'Error',
           text: 'Failed to fetch users',
         });
       }
     },
-    // Fetch all items
-    async fetchItems({ commit }) {
-      try {
-        let res = await fetch(`${renderLink}Items`, {
-          credentials: 'include'
-        });
-        if (!res.ok) {
-          throw new Error('Failed to fetch items');
-        } else {
-          commit('setItems', await res.json());
-        }
-      } catch (error) {
-        console.error('Error fetching items:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Failed to fetch items',
-        });
-      }
-    },
-    async editItems({ commit }, { prodID, newInfo }) {
-      try {
-        const res = await fetch(`${renderLink}items/${prodID}`, {
-          method: 'PATCH',
-          credentials: 'include',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(newInfo)
-        });
-        setTimeout(() => {
-          location.reload()
-        }, 1000);
-        if (!res.ok) {
-          throw new Error('Failed to edit item');
-        }
-        // Optionally, you can commit mutations or handle response as required
-        Swal.fire({
-          icon: 'success',
-          title: 'Success',
-          text: 'Item has been updated',
-        });
-      } catch (error) {
-        console.error('Error editing item:', error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Oops...',
-          text: 'Failed to edit item',
-        });
-        throw error;
-      }
-    },
-
     // Sign the user in
     async signIn({ commit }, { userEmail, userPass }) {
       try {
@@ -126,7 +87,7 @@ export default createStore({
 
         if (!res.ok) {
           // If the response status is not okay, handle the error
-          throw new Error('Failed to login');
+          throw new Error('Incorrect Username or Password');
         }
 
         let { token, user } = await res.json();
@@ -134,8 +95,6 @@ export default createStore({
         if (token !== undefined) {
           // Set the token in the appropriate place
           ApplyToken.applyToken(token);
-          console.log(token);
-
           // Store token in local storage or cookies as needed
           document.cookie = `webtoken=${token};`;
         } else {
@@ -175,22 +134,83 @@ export default createStore({
           text: 'Failed to login. Please try again later.',
         });
       }
+    },
+
+
+// Item Config
+    // Fetch all items
+    async fetchItems({ commit }) {
+      try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
+
+        let res = await fetch(`${renderLink}Items`, {
+
+          headers: {Authorization: `Bearer ${token}`},
+          credentials: 'include'
+        });
+        if (!res.ok) {
+          throw new Error('Failed to fetch items');
+        } else {
+          commit('setItems', await res.json());
+        }
+      } catch (error) {
+        console.error('Error fetching items:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to fetch items',
+        });
+      }
+    },
+    // Edit an item
+    async editItems({ commit }, { prodID, newInfo }) {
+      try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
+        const res = await fetch(`${renderLink}items/${prodID}`, {
+          method: 'PATCH',
+          credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`, 
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(newInfo)
+        });
+        setTimeout(() => {
+          location.reload()
+        }, 1000);
+        if (!res.ok) {
+          throw new Error('Failed to edit item');
+        }
+        // Optionally, you can commit mutations or handle response as required
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Item has been updated',
+        });
+      } catch (error) {
+        console.error('Error editing item:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to edit item',
+        });
+        throw error;
+      }
     }
     ,
     // Add an item
     async addItem(context, newItemData) {
       try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
         const response = await fetch(`${renderLink}items`, {
           method: 'POST',
           credentials: 'include',
           headers: {
+            Authorization :  `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newItemData)
         });
-        // setTimeout(() => {
-        //   location.reload()
-        // }, 1000);
         if (response.ok) {
           await context.dispatch('fetchItems');
           Swal.fire({
@@ -211,6 +231,10 @@ export default createStore({
         });
       }
     },
+
+
+
+// Cart config
     async fetchCart(context) {
       try {
         // Retrieve user ID from the cookie
@@ -247,10 +271,12 @@ export default createStore({
     // Add a user
     async addUser(context, userData) {
       try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
         const response = await fetch(`${renderLink}register`, {
           method: 'POST',
           credentials: 'include',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(userData)
@@ -280,10 +306,12 @@ export default createStore({
     // Edit User
     async editUser(context, { userID, newUserInfo }) {
       try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
         await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
           method: 'PATCH',
           credentials: 'include',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newUserInfo)
@@ -305,6 +333,7 @@ export default createStore({
     },
     async editUserLoggedIn(context, { newUserInfo }) {
       try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
         const cookies = document.cookie.split(';').map(cookie => cookie.trim());
         let userId;
         for (const cookie of cookies) {
@@ -320,6 +349,7 @@ export default createStore({
           method: 'PATCH',
           credentials: 'include',
           headers: {
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newUserInfo)
@@ -358,10 +388,12 @@ export default createStore({
 
       if (userId) {
         try {
+          const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
           const res = await fetch(`${renderLink}cart/${userId}`, {
             method: 'POST',
             credentials: 'include',
             headers: {
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
@@ -402,10 +434,12 @@ export default createStore({
           };
 
           try {
+            const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
             const res = await fetch(`${renderLink}cart/${userId}`, {
               method: "DELETE",
               credentials: 'include',
               headers: {
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify(data)
