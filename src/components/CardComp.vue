@@ -1,21 +1,25 @@
 <template>
-    <div class="card-container">
-        <div class="card m-3" v-for="item in items" :key="item.prodID">
-            <div class="row g-0">
-                <div class="col-md-4 d-flex">
-                    <img :src="item.prodImg" class="img-fluid rounded-start" alt="prodImg">
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ item.prodName }}</h5>
-                        <p class="card-text">{{ item.prodDescription }}
-                        </p>
-                        <div class="col d-flex align-items-end">
-                            <button @click="addToCart(item.prodID)">Add</button>
-                            <router-link :to="'/product/' + item.prodID">
-                                <button type="button" class="btn btn-secondary">Details</button>
-                            </router-link>
-                        </div>
+    <div class="card mb-3" v-for="item in filteredItems" :key="item.prodID">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img :src="item.prodImg" class="img-fluid rounded-start" alt="prodImg" loading="eager">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <slot name="itemName" :item="item">{{ item.prodName }}</slot>
+                    </h5>
+                    <p class="card-text">
+                        <slot name="itemDescription" :item="item">{{ item.prodDescription }}</slot>
+                    </p>
+                    <p class="card-text">
+                        <slot name="itemPrice" :item="item">R {{ item.prodPrice }}</slot>
+                    </p>
+                    <div class="d-flex justify-content-end">
+                        <button @click="addToCart(item.prodID)" class="btn mx-2">Add</button>
+                        <router-link :to="'/product/' + item.prodID">
+                            <button type="button" class="btn mx-2">Details</button>
+                        </router-link>
                     </div>
                 </div>
             </div>
@@ -27,13 +31,8 @@
 import Swal from 'sweetalert2';
 
 export default {
-    data() {
-        return {};
-    },
-    computed: {
-        items() {
-            return this.$store.state.items;
-        }
+    props: {
+        filteredItems: Array
     },
     methods: {
         async addToCart(prodID) {
@@ -45,24 +44,40 @@ export default {
                 Swal.fire('Error', 'Failed to add item to cart', 'error');
             }
         },
-    },
-    async mounted() {
-        try {
-            await this.$store.dispatch('fetchItems');
-        } catch (error) {
-            console.error('Error fetching items', error);
-        }
     }
 }
 </script>
 
 <style scoped>
-.card-container {
-    max-height: 75%;
-    overflow-y: auto;
+img[alt="prodImg"] {
+    width: 180px;
 }
 
-img[alt="prodImg"] {
-    width: 250px;
+.card-body {
+    background: black;
+    color: white;
+    border-bottom-left-radius: .3pc ;
+    border-bottom-right-radius: .3pc ;
+    border-top-right-radius: .3pc ;
+    border-top-left-radius: .3pc ;
+}
+
+.card {
+     border: 2px solid rgb(0, 173, 239);
+}
+
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+.btn:hover {
+    background-color:white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
 }
 </style>
