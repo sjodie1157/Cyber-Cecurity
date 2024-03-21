@@ -1,24 +1,30 @@
 <template>
-    <div>
-        <h1>Product Page</h1>
-
-        <h4>This Still needs design</h4>
-
-        <div v-if="items">
-            <div v-for="item in items" :key="item.prodID">
-                {{ item.prodName }}
-                {{ item.prodPrice }}
-                {{ item.prodDescription }}
-                <button @click="addToCart(item.prodID)">Add to cart</button>
+    <div class="container-fluid">
+        <h1>Items</h1>
+        <input type="search" placeholder="Search for an Item" id="SearchBar">
+        <div class="row">
+            <div class="col-md-3 col-sm-12 mb-4">
+                <h3>Filter By</h3>
+                <div class="col d-lg-flex flex-lg-column">
+                    <button class="btn btn-primary m-2">Category</button>
+                    <button class="btn btn-primary m-2">Price</button>
+                    <button class="btn btn-primary m-2">Name</button>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                <CardComp :items="items" />
             </div>
         </div>
     </div>
 </template>
-
 <script>
 import Swal from 'sweetalert2';
+import CardComp from '../components/CardComp.vue'
 
 export default {
+    components: {
+        CardComp
+    },
     data() {
         return {};
     },
@@ -28,24 +34,26 @@ export default {
         }
     },
     methods: {
-        async addToCart(prodID) {
+        async mounted() {
             try {
-                await this.$store.dispatch('addToCart', prodID);
-                Swal.fire('Success', 'Item has been added to cart', 'success');
+                await this.$store.dispatch('fetchItems');
             } catch (error) {
-                console.error('Error adding item to cart', error);
-                Swal.fire('Error', 'Failed to add item to cart', 'error');
+                console.error('Error fetching items', error);
             }
-        }
-    },
-    async mounted() {
-        try {
-            await this.$store.dispatch('fetchItems');
-        } catch (error) {
-            console.error('Error fetching items', error);
         }
     }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+h1,
+h3 {
+    color: white;
+    padding: 2em 0 0 0;
+}
+
+.container-fluid {
+    background-color: rgb(53, 53, 53);
+    padding: 7px auto;
+}
+</style>
