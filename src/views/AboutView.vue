@@ -8,10 +8,20 @@
   <section class="nonimage-sec">
   </section>
 
-  <section class="image-sec">
-    <h1 class="sec-paragraph" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
-      Image coming soon
+  <section class="image-sec d-flex flex-column ">
+    <h1 class="sec-paragraph text-white" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="800">
+      Cyber Security
     </h1>
+    <h3 class="text-white" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="800">
+      In the dynamic landscape of contemporary security, Cyber Security emerges as a beacon of innovation and
+      dependability. Committed to protecting homes, businesses, and institutions, Cyber Security offers an extensive
+      array of state-of-the-art technological products. From advanced surveillance systems featuring AI-driven analytics
+      to seamlessly integrated smart locks and access control solutions, our offerings redefine security standards.
+      Meticulously crafted by our team of experts, each product not only boasts cutting-edge functionality but also
+      user-friendly interfaces, empowering clients to effortlessly manage their security needs. Entrust Cyber Security
+      to fortify your world,
+      safeguarding what matters most with the latest innovations in security technology.
+    </h3>
   </section>
 
   <section class="nonimage-secfade">
@@ -24,7 +34,7 @@
     <h2 class="sec-paragraph" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
       this is the companies mission paragraph
     </h2>
-    <div class="container d-flex">
+    <div class="container d-flex" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
       <div class="col">
         <img src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png" alt="statsImg">
       </div>
@@ -42,7 +52,7 @@
     <h1 class="sec-paragraph" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
       Meet The Development Team
     </h1>
-    <div class="container d-flex">
+    <div class="container d-flex" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
       <div class="col">
         <img src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png" alt="statsImg">
         <h1>Name</h1>
@@ -64,7 +74,7 @@
   <section class="nonimage-secLg">
   </section>
 
-  <div class="container">
+  <div class="container" data-aos="fade-down" data-aos-easing="linear" data-aos-duration="700">
     <div class="col">
       <h1>App Compatibilities & Features</h1>
       <div class="row">
@@ -169,7 +179,7 @@ export default {
   justify-content: center;
   align-items: center;
   height: 85vh;
-  background-image: url('https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png');
+  background-image: url('https://i.postimg.cc/1tjBbvxF/The-Ultimate-Beginner-s-Guide-To-IT-Infrastructure-Management.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;

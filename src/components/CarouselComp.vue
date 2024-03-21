@@ -4,32 +4,30 @@
             <div id="image-container">
                 <!-- Duplicate original images before -->
                 <div class="col">
-                    <img class="image"
-                        src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
-                        alt="Image1">
+                    <img class="image" src="https://i.postimg.cc/nr6WKjsm/image-2024-03-20-151808934.png" alt="Image1">
                 </div>
                 <div class="col">
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/d18Lr1qx/One-Orange-Braincell-50-Times-Orange-Cats-Acted-So-Dorky-Their-Pics-Ended-Up-On-This-Online-Grou.jpg"
                                 alt="Image2">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/GhXzGgNC/Best-Selling-Smart-Video-Doorbell-Enhance-Your-Home-Security.jpg"
                                 alt="Image3">
                         </div>
                     </div>
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/DwR4L1P6/Rich-De-Muro-on-Instagram-First-in-person-look-at-ring-s-security-camera-drone-flying-Available-in.jpg"
                                 alt="Image4">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/jShggdCG/Amazon-announces-Astro-the-home-robot.jpg"
                                 alt="Image5">
                         </div>
                     </div>
@@ -38,32 +36,30 @@
 
                 <!-- Original set of images -->
                 <div class="col">
-                    <img class="image"
-                        src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
-                        alt="Image1">
+                    <img class="image" src="https://i.postimg.cc/nr6WKjsm/image-2024-03-20-151808934.png" alt="Image1">
                 </div>
                 <div class="col">
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/d18Lr1qx/One-Orange-Braincell-50-Times-Orange-Cats-Acted-So-Dorky-Their-Pics-Ended-Up-On-This-Online-Grou.jpg"
                                 alt="Image2">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/GhXzGgNC/Best-Selling-Smart-Video-Doorbell-Enhance-Your-Home-Security.jpg"
                                 alt="Image3">
                         </div>
                     </div>
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/DwR4L1P6/Rich-De-Muro-on-Instagram-First-in-person-look-at-ring-s-security-camera-drone-flying-Available-in.jpg"
                                 alt="Image4">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/jShggdCG/Amazon-announces-Astro-the-home-robot.jpg"
                                 alt="Image5">
                         </div>
                     </div>
@@ -72,32 +68,30 @@
 
                 <!-- Duplicate original images after -->
                 <div class="col">
-                    <img class="image"
-                        src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
-                        alt="Image1">
+                    <img class="image" src="https://i.postimg.cc/nr6WKjsm/image-2024-03-20-151808934.png" alt="Image1">
                 </div>
                 <div class="col">
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/d18Lr1qx/One-Orange-Braincell-50-Times-Orange-Cats-Acted-So-Dorky-Their-Pics-Ended-Up-On-This-Online-Grou.jpg"
                                 alt="Image2">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/GhXzGgNC/Best-Selling-Smart-Video-Doorbell-Enhance-Your-Home-Security.jpg"
                                 alt="Image3">
                         </div>
                     </div>
                     <div class="col d-flex">
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/DwR4L1P6/Rich-De-Muro-on-Instagram-First-in-person-look-at-ring-s-security-camera-drone-flying-Available-in.jpg"
                                 alt="Image4">
                         </div>
                         <div class="col">
                             <img class="image"
-                                src="https://i.postimg.cc/52fzzHRQ/Placeholder-view-vector-svg.png"
+                                src="https://i.postimg.cc/jShggdCG/Amazon-announces-Astro-the-home-robot.jpg"
                                 alt="Image5">
                         </div>
                     </div>
@@ -137,49 +131,64 @@ export default {
 </script>
 
 <style scoped>
-    #container {
-        width: 100%;
+#container {
+    width: 100%;
     overflow: hidden;
     position: relative;
 }
 
-    #image-container {
-        display: flex;
+#image-container {
+    display: flex;
 }
 
-    .image {
-        margin: .3em;
+.image {
+    margin: .3em;
     filter: grayscale(100%);
     transition: filter 0.3s ease;
 }
 
-    .image:hover {
-        filter: grayscale(0%);
+.image:hover {
+    filter: grayscale(0%);
 }
 
-    img[alt="Image1"] {
-        width: 400px;
+img[alt="Image1"] {
+    width: 380px;
     height: 410px;
 }
 
-    img[alt="Image2"] {
-        width: 300px;
+.btn {
+    position: relative;
+    bottom: 5em;
+    right: 6em;
+    font-weight: 600;
+    color: rgb(0, 173, 239);
+    border: 2px solid rgb(0, 173, 239);
+}
+
+.btn:hover {
+    background-color:rgb(0, 173, 239);
+    border: 2px solid rgb(0, 173, 239);
+    color: white;
+}
+
+
+img[alt="Image2"] {
+    width: 300px;
     height: 200px;
 }
 
-    img[alt="Image3"] {
-        width: 180px;
+img[alt="Image3"] {
+    width: 180px;
     height: 200px;
 }
 
-    img[alt="Image4"] {
-        width: 150px;
+img[alt="Image4"] {
+    width: 150px;
     height: 200px;
 }
 
-    img[alt="Image5"] {
-        width: 330px;
+img[alt="Image5"] {
+    width: 330px;
     height: 200px;
 }
-
 </style>

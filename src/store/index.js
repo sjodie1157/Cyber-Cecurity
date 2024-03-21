@@ -7,6 +7,7 @@ export default createStore({
   state: {
     users: null,
     items: null,
+    item: null,
     cart: null,
     signedUser: '',
     isLoggedIn: false,
@@ -20,6 +21,9 @@ export default createStore({
     },
     setItems(state, value) {
       state.items = value;
+    },
+    setItem(state, value) {
+      state.item = value;
     },
     setCart(state, value) {
       state.cart = value;
@@ -35,7 +39,7 @@ export default createStore({
     }
   },
   actions: {
-// User Config
+    // User Config
     // Fetch all users
     async fetchUsers({ commit, state }) {
       try {
@@ -45,7 +49,7 @@ export default createStore({
         }
 
         const res = await fetch(`${renderLink}User`, {
-          headers: {Authorization: `Bearer ${token}`},
+          headers: { Authorization: `Bearer ${token}` },
           credentials: 'include'
         });
 
@@ -136,8 +140,35 @@ export default createStore({
       }
     },
 
+    async fetchItem({ commit }, prodID) {
+      try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1];
+        if (!token) {
+          throw new Error('Token not found');
+        }
 
-// Item Config
+        const res = await fetch(`${renderLink}Items/${prodID}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include'
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch item details');
+        }
+
+        const itemData = await res.json();
+        commit('setItem', itemData);
+      } catch (error) {
+        console.error('Error fetching item:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to fetch item details',
+        });
+      }
+    },
+
+    // Item Config
     // Fetch all items
     async fetchItems({ commit }) {
       try {
@@ -145,7 +176,7 @@ export default createStore({
 
         let res = await fetch(`${renderLink}Items`, {
 
-          headers: {Authorization: `Bearer ${token}`},
+          headers: { Authorization: `Bearer ${token}` },
           credentials: 'include'
         });
         if (!res.ok) {
@@ -162,6 +193,7 @@ export default createStore({
         });
       }
     },
+
     // Edit an item
     async editItems({ commit }, { prodID, newInfo }) {
       try {
@@ -170,7 +202,7 @@ export default createStore({
           method: 'PATCH',
           credentials: 'include',
           headers: {
-            Authorization: `Bearer ${token}`, 
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newInfo)
@@ -206,7 +238,7 @@ export default createStore({
           method: 'POST',
           credentials: 'include',
           headers: {
-            Authorization :  `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           },
           body: JSON.stringify(newItemData)
@@ -234,7 +266,7 @@ export default createStore({
 
 
 
-// Cart config
+    // Cart config
     async fetchCart(context) {
       try {
         // Retrieve user ID from the cookie
@@ -418,6 +450,47 @@ export default createStore({
           title: 'Oops...',
           text: 'User ID not found. Unable to add product to cart.',
         });
+      }
+    },
+    async clearCart(context, params) {
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim());
+      let userId;
+
+      for (const cookie of cookies) {
+        const [name, value] = cookie.split('=');
+        if (name.trim() === 'user') {
+          const user = JSON.parse(decodeURIComponent(value));
+          userId = user.userID;
+          const data = {
+            prodID: params
+          };
+
+          try {
+            const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
+            const res = await fetch(`${renderLink}cart/Clear/${userId}`, {
+              method: "DELETE",
+              credentials: 'include',
+              headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(data)
+            });
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Thanks for your purchase',
+            });
+          } catch (error) {
+            console.error('Unable to clear cart:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'Unable to clear cart',
+            });
+          }
+          break;
+        }
       }
     },
     async removeFromCart(context, params) {

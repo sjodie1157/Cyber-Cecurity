@@ -1,17 +1,18 @@
 <template>
-    <h1>
-        Cart Page
-    </h1>
-    <h4>
-        Still need to finish design
-    </h4>
-    <div v-if="cart">
+    <div class="container-fluid">
+        <h1>Checkout Page</h1>
+    </div>
+    <div v-if="cart && cart.length > 0">
         <div v-for="item in cart" :key="item.prodID">
             {{ item.prodName }}
             {{ item.prodID }}
             {{ item.totalQuantity }}
-            <button @click="removeFromCart(item.prodID)">delete item</button>
+            <button @click="removeFromCart(item.prodID)">Delete Item</button>
         </div>
+        <button @click="clearCart">Clear Cart</button>
+    </div>
+    <div v-else>
+        <p>Your cart is empty.</p>
     </div>
 </template>
 
@@ -36,6 +37,16 @@ export default {
                 console.error('Error removing item from cart', error);
                 Swal.fire('Error', 'Failed to remove item from cart', 'error');
             }
+        },
+        async clearCart() {
+            try {
+                await this.$store.dispatch('clearCart');
+                await Swal.fire('Success', 'Thanks For your purchase', 'success');
+                location.reload()
+            } catch (error) {
+                console.error('Error clearing cart', error);
+                Swal.fire('Error', 'Failed to clear cart', 'error');
+            }
         }
     },
     async mounted() {
@@ -48,4 +59,10 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.container-fluid {
+    min-height: 80vh;
+    background-color: rgb(53, 53, 53);
+    padding: 7px auto;
+}
+</style>
