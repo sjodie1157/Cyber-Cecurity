@@ -68,6 +68,33 @@ export default createStore({
         });
       }
     },
+    async fetchSingleUsers({ commit, state }) {
+      try {
+        const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
+        if (!token) {
+          throw new Error('Token not found');
+        }
+
+        const res = await fetch(`${renderLink}User/${userID}`, {
+          headers: { Authorization: `Bearer ${token}` },
+          credentials: 'include'
+        });
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch users');
+        }
+
+        const usersData = await res.json();
+        commit('setUsers', usersData);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Failed to fetch users',
+        });
+      }
+    },
     // Sign the user in
     async signIn({ commit }, { userEmail, userPass }) {
       try {
@@ -139,7 +166,6 @@ export default createStore({
         });
       }
     },
-
     async fetchItem({ commit }, prodID) {
       try {
         const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1];

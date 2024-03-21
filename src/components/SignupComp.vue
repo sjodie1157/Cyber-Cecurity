@@ -97,14 +97,29 @@ h4 {
 }
 
 .modal-body {
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     border-radius: .4pc;
+}
+
+input {
+    background-color: transparent;
+    color: white;
+    cursor: none;
+}
+
+input:focus {
+    outline: none;
+    background-color: rgb(0, 173, 239);
+    cursor: none;
+}
+
+label {
+    color: white;
 }
 
 .black-text {
     color: black !important;
 }
-
 #signInBtn {
     background-color: transparent;
 }
