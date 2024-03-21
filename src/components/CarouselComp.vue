@@ -143,13 +143,10 @@ export default {
 
 .image {
     margin: .3em;
-    filter: grayscale(100%);
-    transition: filter 0.3s ease;
+    border: 3px solid rgb(0, 173, 239);
+    border-radius: .5pc;
 }
 
-.image:hover {
-    filter: grayscale(0%);
-}
 
 img[alt="Image1"] {
     width: 380px;
