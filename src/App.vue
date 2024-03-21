@@ -1,15 +1,16 @@
 <template>
-  <NavBarComp/>
+  <NavBarComp />
+  <FooterComp/>
 </template>
 
 <script>
 import NavBarComp from './components/NavBarComp.vue';
-
-
+import FooterComp from './components/FooterComp.vue'
 
 export default {
   components: {
-    NavBarComp
+    NavBarComp,
+    FooterComp
   }
 };
 </script>

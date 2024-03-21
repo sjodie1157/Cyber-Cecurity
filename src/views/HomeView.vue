@@ -20,9 +20,6 @@
         Not home? Let<span> Astro bot</span> secure the place.
       </h1>
     </section>
-
-    <section class="nonimage-sec">
-    </section>
   </div>
 </template>
 
