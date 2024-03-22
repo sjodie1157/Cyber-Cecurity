@@ -112,7 +112,7 @@ h4 {
 }
 
 .modal-body {
-    background-color: rgba(0, 89, 255, 0.829);
+    background-color: rgb(0, 173, 239);
     border-radius: .4pc;
 }
 
@@ -124,7 +124,7 @@ input {
 
 input:focus {
     outline: none;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     cursor: none;
 }
 </style>

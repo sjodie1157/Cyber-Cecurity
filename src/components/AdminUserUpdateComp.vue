@@ -63,7 +63,7 @@
                                     <label class="form-check-label" for="userRoleAdmin">Worker</label>
                                 </div>
                             </div>
-                            <button type="submit">Submit</button>
+                            <button class="btn p-1" type="submit">Submit</button>
                         </form>
                     </div>
                 </div>
@@ -102,7 +102,7 @@ export default {
                 });
                 Swal.fire('Success', 'User information has been updated', 'success');
                 setTimeout(() => {
-                    location.reload(); 
+                    location.reload();
                 }, 1000);
             } catch (error) {
                 console.error('Error editing user:', error);
@@ -113,4 +113,19 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+.btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
+}
+</style>

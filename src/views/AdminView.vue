@@ -102,9 +102,13 @@ export default {
     methods: {
         async deleteUser(userID) {
             try {
+                const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
                 await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
+                    method: 'DELETE',
                     credentials: 'include',
-                    method: 'DELETE'
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 });
                 this.$store.dispatch('fetchUsers');
                 Swal.fire('Success', 'User has been removed', 'success');
@@ -133,8 +137,12 @@ export default {
         },
         async deleteItem(prodID) {
             try {
+                const token = document.cookie.split(';').find(cookie => cookie.startsWith('webtoken='))?.split('=')[1]
                 await fetch(`https://cyber-cecurity-1.onrender.com/items/${prodID}`, {
                     credentials: 'include',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    },
                     method: 'DELETE',
                 });
                 this.$store.dispatch('fetchItems');
@@ -164,5 +172,24 @@ h1 {
 .container-fluid {
     min-height: 100vh;
     background-color: gray;
+}
+
+h1 {
+    color: white;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
 }
 </style>

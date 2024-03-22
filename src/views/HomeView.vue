@@ -20,9 +20,6 @@
         Not home? Let<span> Astro bot</span> secure the place.
       </h1>
     </section>
-
-    <section class="nonimage-sec">
-    </section>
   </div>
 </template>
 
@@ -70,6 +67,6 @@ h1 {
 }
 
 span {
-  color: rgb(0, 89, 255);
+  color: rgb(0, 173, 239);
 }
 </style>

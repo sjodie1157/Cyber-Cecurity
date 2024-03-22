@@ -1,34 +1,35 @@
 <template>
     <div>
         <nav class="navbar bg-body-trasnparent fixed-top" :class="{ 'bg-white': isScrolled }">
-            <div class="container-fluid">
-                <div class="col">
+            <div class="container-fluid flex-column flex-sm-row">
+                <div class="col d-flex">
                     <button class="navbar-toggler text-white" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
-                        aria-label="Toggle navigation">
+                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation"
+                        v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
                         <h6 :class="{ 'black-text': isScrolled }"><i class="bi bi-list"> </i> Pages</h6>
                     </button>
+                    <h5 v-else :class="{ 'black-text': isScrolled }" class="d-none d-md-block d-lg-block">Login / Sign
+                        Up for Navigation</h5>
                 </div>
                 <div class="col">
-                    <h1 :class="{ 'black-text': isScrolled }"><span>Cy</span>ber <span>Secu</span>rity</h1>
+                    <h1 :class="{ 'black-text': isScrolled }" class="d-none d-md-block d-lg-block"><span>Cy</span>ber
+                        <span>Secu</span>rity
+                    </h1>
                 </div>
                 <div class="col">
                     <span class="d-flex ms-auto justify-content-end align-items-center"
                         v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
                         <div class="col-5">
-                            <h5 class="d-flex justify-content-end" :class="{ 'black-text': isScrolled }">{{
-                                userloggedinName }}</h5>
+                            <h4 class="d-flex justify-content-end text-white  d-none d-md-flex d-lg-flex"
+                                :class="{ 'black-text': isScrolled }">{{
+                                userloggedinName }}</h4>
                         </div>
-                        <div class="col-6 w-auto d-flex justify-content-end">
+                        <div class="col-6 w-auto d-flex justify-content-end d-none d-md-flex d-lg-flex">
                             <img :src="userImage || ''" alt="loggedInUser"
                                 v-if="userImage !== null && userImage !== undefined">
                             <div v-else>
                                 <h3 :class="{ 'black-text': isScrolled }">{{ userloggedinName.charAt(0) }}</h3>
                             </div>
-                        </div>
-                        <div class="col-6 w-auto d-flex justify-content-end">
-                            <button @click="signOut" :class="{ 'black-text': isScrolled }">Sign Out<i
-                                    class="bi bi-box-arrow-right"></i></button>
                         </div>
                     </span>
                     <span class="d-flex justify-content-end" v-else>
@@ -36,6 +37,8 @@
                         <SignupComp />
                     </span>
                 </div>
+
+                <!-- offcanvas start -->
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar"
                     aria-labelledby="offcanvasNavbarLabel">
                     <div class="offcanvas-header">
@@ -78,13 +81,17 @@
                                     Contact</router-link>
                             </li>
                         </ul>
-                        <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')">
+                        <div v-if="$cookies.isKey('webtoken') && $cookies.isKey('user')" class="my-">
                             <div class="col">
-                                <UpdateUser :user="user" @click="editUserLoggedIn" />
-                                <button type="button" class="btn btn-danger" @click="deleteUser">Delete Your
-                                    Account
-                                </button>
+                                <UpdateUser />
                             </div>
+                            <div class="col align-self-end text-center mb-3">
+                                <button @click="signOut" id="signOut">Sign Out<i class="bi bi-box-arrow-right"
+                                        </i></button>
+                            </div>
+                            <button type="button" class="delbtn" @click="deleteUser">Delete Your
+                                Account<i class="bi bi-person-dash-fill"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -164,17 +171,33 @@ export default {
                 Swal.fire('Error', 'Failed to update user', 'error');
             }
         },
+        async editUser(updatedUser) {
+            try {
+                await this.$store.dispatch('editUser', { userID: updatedUser.userID, newInfo: updatedUser });
+                Swal.fire('Success', 'User has been updated', 'success');
+            } catch (error) {
+                console.error('Error editing user', error);
+                Swal.fire('Error', 'Failed to update user', 'error');
+            }
+        },
         async deleteUser() {
             try {
                 const userData = this.$cookies.get("user");
                 if (userData && userData.userID) {
                     const userID = userData.userID;
-                    const response = await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
+                    const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('webtoken='))?.split('=')[1];
+                    if (!token) {
+                        throw new Error('Web token not found.');
+                    }
+                    let response = await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
                         method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
                     });
 
                     if (response.ok) {
-
                         this.$cookies.remove("user");
                         this.$cookies.remove("webtoken");
 
@@ -197,6 +220,7 @@ export default {
                 Swal.fire('Error', 'Failed to delete user', 'error');
             }
         }
+
     }
 }
 </script>
@@ -205,10 +229,6 @@ export default {
 .bg-white {
     background-color: rgba(255, 255, 255, 0.59) !important;
     transition: background-color 0.3s ease;
-}
-
-span {
-    color: rgb(0, 89, 255);
 }
 
 .black-text {
@@ -235,7 +255,7 @@ span {
     left: 0;
     width: 100%;
     height: 5px;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     visibility: hidden;
     border-radius: .3pc;
 }
@@ -247,7 +267,7 @@ span {
 
 nav a.router-link-active {
     color: white;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     border-radius: .3pc;
 }
 
@@ -271,18 +291,33 @@ button {
     transition: all .3s;
 }
 
+#signOut {
+    color: black;
+}
+
+#signOut:hover {
+    color: black;
+    background-color:transparent;
+}
+
 h1 {
     color: white;
 }
 
+span {
+    color: rgb(0, 173, 239);
+}
+
 h5 {
+    display: flex;
+    align-items: center;
     color: white;
     margin-bottom: 0;
     font-size: 16px;
 }
 
 button:hover {
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
 }
 
 button.navbar-toggler {
@@ -307,7 +342,7 @@ h6 {
 }
 
 h6:hover {
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
 }
 
 .offcanvas {
@@ -330,11 +365,19 @@ h3 {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgb(0, 89, 255);
+    background-color: rgb(0, 173, 239);
     width: 35px;
     height: 35px;
     border-radius: 5pc;
     color: white;
     font-size: 16px;
+}
+
+.delbtn {
+    color: red;
+}
+
+.delbtn:hover {
+    background-color: transparent;
 }
 </style>
