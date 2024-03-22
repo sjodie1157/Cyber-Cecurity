@@ -8,12 +8,9 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <!-- Modal content -->
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Edit User</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
                     <div class="modal-body">
                         <form @submit.prevent="submitEditUser">
+                            <h1>Edit Your Account</h1>
                             <div class="mb-3">
                                 <label for="Email" class="col-form-label">Email:</label>
                                 <input type="email" class="form-control" id="prodName" v-model="userEmail">
@@ -46,7 +43,7 @@
                                 <label for="age" class="col-form-label">Age:</label>
                                 <input type="number" class="form-control" id="age" v-model="userAge">
                             </div>
-                            <button type="submit">Submit</button>
+                            <button type="submit" class="d-flex justify-content-center" id="sub">Submit changes</button>
                         </form>
                     </div>
                 </div>
@@ -130,5 +127,27 @@ button:active {
     background-color: transparent;
     box-shadow: none;
     color: black;
+}
+
+.modal-body , select{
+    background-color: rgb(0, 173, 239);
+    color: white;
+    border-radius: .4pc;
+}
+
+input , h1{
+    background-color: transparent;
+    color: white;
+    cursor: none;
+}
+
+input:focus {
+    outline: none;
+    background-color: rgb(0, 173, 239);
+    cursor: none;
+}
+
+#sub {
+    color: white;
 }
 </style>
