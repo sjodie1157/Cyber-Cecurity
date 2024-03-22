@@ -1,6 +1,6 @@
 <template>
     <div>
-        <button type="button" class="btn my-2" data-bs-toggle="modal" :data-bs-target="'#editprodmodal' + item.prodID">
+        <button type="button" class="btn" data-bs-toggle="modal" :data-bs-target="'#editprodmodal' + item.prodID">
             Edit
         </button>
 
@@ -86,4 +86,19 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+.btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
+}
+</style>

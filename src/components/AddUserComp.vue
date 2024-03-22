@@ -91,16 +91,27 @@ h4 {
     color: white;
 }
 
-.modal-body {
-    background-color:rgb(0, 173, 239);
-    border-radius: .4pc;
-}
-
 .black-text {
     color: black !important;
 }
 
 #signInBtn {
     background-color: transparent;
+}
+
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+    margin: 1em;
+}
+
+.btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
 }
 </style>

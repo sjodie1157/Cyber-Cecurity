@@ -173,4 +173,23 @@ h1 {
     min-height: 100vh;
     background-color: gray;
 }
+
+h1 {
+    color: white;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
+}
 </style>
