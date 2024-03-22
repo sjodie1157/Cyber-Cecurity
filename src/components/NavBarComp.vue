@@ -203,7 +203,7 @@ export default {
 
                         // Fix link Upon Firebase Deploy
                         setTimeout(() => {
-                            location.href = 'http://localhost:8080';
+                            location.href = 'https://cyber-security-d812a.web.app';
                         }, 1000);
 
                         Swal.fire('Success', 'User has been deleted', 'success');

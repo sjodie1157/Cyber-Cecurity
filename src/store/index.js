@@ -571,7 +571,7 @@ export default createStore({
         document.cookie = 'user=; expires=Fri, 06 Jul 2001 00:00:00 UTC; path=/;';
 
         // change directory when firebase deploy to home
-        location.href = 'http://localhost:8080';
+        location.href = 'https://cyber-security-d812a.web.app';
       } catch (error) {
         console.error('Error signing out:', error);
         Swal.fire({
