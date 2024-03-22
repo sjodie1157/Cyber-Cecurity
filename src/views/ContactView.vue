@@ -1,30 +1,28 @@
 <template>
-    <div class="container">
+    <div class="container-fluid">
         <h1>Contact us</h1>
         <h2>Get in touch with us by completing this form</h2>
         <form @submit="submitForm" action="https://formspree.io/f/mzbnaobq" method="POST">
             <div class="row">
                 <div class="col-md-6">
                     <label>First name</label>
-                    <input type="text" class="form-control" placeholder="Enter your first name here"
-                         name="FirstName" required>
+                    <input type="text" class="form-control" placeholder="Enter your first name here" name="FirstName"
+                        required>
                 </div>
                 <div class="col-md-6">
                     <label>Last name</label>
-                    <input type="text" class="form-control" placeholder="Enter your last name here"
-                     name="LastName" required>
+                    <input type="text" class="form-control" placeholder="Enter your last name here" name="LastName"
+                        required>
                 </div>
             </div>
             <div class="row mt-3">
                 <div class="col-md-6">
                     <label>Email address</label>
-                    <input type="email" class="form-control" placeholder="Enter your email here"
-                        name="Email" required>
+                    <input type="email" class="form-control" placeholder="Enter your email here" name="Email" required>
                 </div>
                 <div class="col-md-6">
                     <label>Message</label>
-                    <input type="text" class="form-control" placeholder="Type your message here"
-                        name="message" >
+                    <input type="text" class="form-control" placeholder="Type your message here" name="message">
                 </div>
             </div>
             <div class="mt-3 d-flex justify-content-evenly">
@@ -36,7 +34,7 @@
         <h2 class="mt-5">Call online support or visit us directly</h2>
         <p class="mt-3">Cell: 079 905 5421</p>
         <h2 class="mt-3">Address:</h2>
-        <div class="mt-3">
+        <div class="mt-3 p-1">
             <p>25 Loop Street</p>
             <p>Grassy Park</p>
             <p>Cape Town</p>
@@ -54,9 +52,9 @@ export default {
     },
     methods: {
         async submitForm() {
-                this.submitMessage = "You've submitted all your fields correctly. Thank you for contacting us";
-                await Swal.fire('Success', 'Submit Successful', 'success');
-                location.reload()
+            this.submitMessage = "You've submitted all your fields correctly. Thank you for contacting us";
+            await Swal.fire('Success', 'Submit Successful', 'success');
+            location.reload()
         }
     }
 };
@@ -66,6 +64,12 @@ export default {
 label,
 input {
     margin: 5px;
+}
+
+.container-fluid {
+    min-height: 80vh;
+    background-color: rgb(53, 53, 53);
+    padding: 1em auto;
 }
 
 label {
@@ -80,5 +84,15 @@ label {
 
 input:focus {
     min-width: 2em;
+}
+
+h1 {
+    padding: 2em 0 0 0;
+}
+
+p,
+h1,
+h2 {
+    color: white;
 }
 </style>
