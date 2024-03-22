@@ -32,7 +32,7 @@
             </div>
             <div class="total">
                 <h5>Total Price: R {{ totalPrice }}</h5>
-                <button @click="clearCart">Purchase</button>
+                <button class="p-2" @click="clearCart">Purchase</button>
             </div>
         </div>
         <div v-else class="d-flex justify-content-center">
@@ -103,15 +103,23 @@ img[alt="prodImg"] {
     min-height: 56vh;
 }
 
-.total {
-    display: flex;
-    justify-content: end;
-    flex-direction: column;
-    max-width: 15%;
-    margin: 2em;
-}
 
 .table tbody tr {
     border-top: none;
+}
+
+button {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
 }
 </style>

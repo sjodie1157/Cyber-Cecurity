@@ -105,4 +105,20 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.btn {
+    background-color: black;
+    color: white;
+    border: 1px solid white;
+    border-radius: 0;
+    transition: all .3s;
+}
+
+.btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+    border-radius: 0;
+    
+}
+</style>
