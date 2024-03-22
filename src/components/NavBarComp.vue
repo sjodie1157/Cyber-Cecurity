@@ -185,12 +185,19 @@ export default {
                 const userData = this.$cookies.get("user");
                 if (userData && userData.userID) {
                     const userID = userData.userID;
-                    const response = await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
+                    const token = document.cookie.split(';').find(cookie => cookie.trim().startsWith('webtoken='))?.split('=')[1];
+                    if (!token) {
+                        throw new Error('Web token not found.');
+                    }
+                    let response = await fetch(`https://cyber-cecurity-1.onrender.com/user/${userID}`, {
                         method: 'DELETE',
+                        credentials: 'include',
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        },
                     });
 
                     if (response.ok) {
-
                         this.$cookies.remove("user");
                         this.$cookies.remove("webtoken");
 
@@ -213,6 +220,7 @@ export default {
                 Swal.fire('Error', 'Failed to delete user', 'error');
             }
         }
+
     }
 }
 </script>
