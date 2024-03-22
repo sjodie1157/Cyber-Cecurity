@@ -1,18 +1,43 @@
 <template>
     <div class="container-fluid">
-        <h1>Checkout Page</h1>
     </div>
-    <div v-if="cart && cart.length > 0">
-        <div v-for="item in cart" :key="item.prodID">
-            {{ item.prodName }}
-            {{ item.prodID }}
-            {{ item.totalQuantity }}
-            <button @click="removeFromCart(item.prodID)">Delete Item</button>
+    <h1>Cart</h1>
+    <div class="container">
+        <div v-if="cart && cart.length > 0">
+            <div class="container" style="height: 400px; overflow-y: auto;">
+                <div class="table-responsive">
+                    <table class="table table-borderless">
+                        <thead class="visually-hidden">
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Total Price</th>
+                                <th>Total Quantity</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="item in cart" :key="item.prodID">
+                                <td class="align-middle"><img :src="item.prodImg" alt="prodImg"
+                                        style="max-width: 100px;"></td>
+                                <td class="align-middle">{{ item.prodName }}</td>
+                                <td class="align-middle">{{ item.totalPrice }}</td>
+                                <td class="align-middle">{{ item.totalQuantity }}</td>
+                                <td class="align-middle"><button @click="removeFromCart(item.prodID)"
+                                        class="btn btn-danger">Remove</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="total">
+                <h5>Total Price: R {{ totalPrice }}</h5>
+                <button @click="clearCart">Purchase</button>
+            </div>
         </div>
-        <button @click="clearCart">Clear Cart</button>
-    </div>
-    <div v-else>
-        <p>Your cart is empty.</p>
+        <div v-else class="d-flex justify-content-center">
+            <h3>Your cart is empty.</h3>
+        </div>
     </div>
 </template>
 
@@ -26,6 +51,10 @@ export default {
     computed: {
         cart() {
             return this.$store.state.cart;
+        },
+        totalPrice() {
+            const total = this.cart.reduce((total, item) => total + (item.totalPrice * item.totalQuantity), 0);
+            return total.toFixed(2);
         }
     },
     methods: {
@@ -58,11 +87,31 @@ export default {
     }
 }
 </script>
-
 <style scoped>
 .container-fluid {
-    min-height: 80vh;
+    min-height: 10vh;
     background-color: rgb(53, 53, 53);
     padding: 7px auto;
+}
+
+img[alt="prodImg"] {
+    width: 200px;
+    aspect-ratio: 1/.8;
+}
+
+.container {
+    min-height: 56vh;
+}
+
+.total {
+    display: flex;
+    justify-content: end;
+    flex-direction: column;
+    max-width: 15%;
+    margin: 2em;
+}
+
+.table tbody tr {
+    border-top: none;
 }
 </style>
