@@ -109,6 +109,7 @@ img[alt="prodImg"] {
 }
 
 button {
+
     background-color: black;
     color: white;
     border: 1px solid white;
@@ -117,9 +118,11 @@ button {
 }
 
 button:hover {
+    
     background-color: white;
     color: black;
     border: 1px solid white;
     border-radius: 0;
 }
+
 </style>
