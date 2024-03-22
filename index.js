@@ -12,7 +12,7 @@ const port = process.env.PORT || 4500;
 
 // Middleware to enable CORS with appropriate options
 app.use(cors({
-    origin: 'http://localhost:8080', // Allow requests from this origin
+    origin: 'https://cyber-security-d812a.web.app', // Allow requests from this origin
     credentials: true // Include credentials in CORS request
 }));
 
