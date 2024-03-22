@@ -24,7 +24,7 @@
                                 <td class="align-middle">{{ item.totalPrice }}</td>
                                 <td class="align-middle">{{ item.totalQuantity }}</td>
                                 <td class="align-middle"><button @click="removeFromCart(item.prodID)"
-                                        class="btn btn-danger">Remove</button></td>
+                                        class="btn">Remove</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -32,7 +32,7 @@
             </div>
             <div class="total">
                 <h5>Total Price: R {{ totalPrice }}</h5>
-                <button class="p-2" @click="clearCart">Purchase</button>
+                <button class="btn p-2" @click="clearCart">Purchase</button>
             </div>
         </div>
         <div v-else class="d-flex justify-content-center">
@@ -108,7 +108,7 @@ img[alt="prodImg"] {
     border-top: none;
 }
 
-button {
+.btn {
 
     background-color: black;
     color: white;
@@ -117,7 +117,7 @@ button {
     transition: all .3s;
 }
 
-button:hover {
+.btn:hover {
     
     background-color: white;
     color: black;
